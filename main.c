@@ -109,7 +109,6 @@ int main()
         Beep(1, 210);
         Beep(1, 240);
         */
-        CyDelay(1500);
                      // motor start
         
         sensor_isr_StartEx(sensor_isr_handler);
@@ -136,6 +135,7 @@ int main()
             printf("%d %d %d %d \r\n", dig.l3, dig.l1, dig.r1, dig.r3);        //print out 0 or 1 according to results of reflectance period
             
            
+            
             
             motor_start();
             
@@ -174,50 +174,50 @@ int main()
             
             //Suoraan
             if (ref.l1 > 14100 && ref.r1 > 14270) {
-                left = 217;
-                right = 225;
+                left = 248;
+                right = 255;
                 turnDirection = 0;
             }
             
             //Loivempi
-            if (ref.l1 < 12000 && ref.r1 > 12000) {
+            if (ref.l1 < 10000 && ref.r1 > 10000) {
                 right *= 0.90;
                 turnDirection = 2;
                 if (right < rightMin) {
                     right = rightMin;              
-                }           
-            } else if (ref.l1 > 13000 && ref.r1 < 13000) {
+                }
+            } else if (ref.l1 > 11000 && ref.r1 < 11000) {
                 left *= 0.90;
                 turnDirection = 1;
                 if (left < leftMin) {
                     left = leftMin;
                 }   
                 //Jyrkin
-            } else if (ref.l1 < 10000 && ref.r1 > 10000) {
+            } else if (ref.l1 < 8000 && ref.r1 > 8000) {
                 right *= 0.75;
                 turnDirection = 2;
                 if (right < rightHardMin) {
                     right = rightHardMin;              
-                }           
-            } else if (ref.l1 > 10000 && ref.r1 < 10000) {
+                }
+            } else if (ref.l1 > 8000 && ref.r1 < 8000) {
                 left *= 0.75;
                 turnDirection = 1;
                 if (left < leftHardMin) {
                     left = leftHardMin;
-                }    
+                } 
                 //Loivin
             } else if (ref.l1 < 14100 && ref.r1 > 14270) {
                 right *= 0.90;
                 turnDirection = 2;
                 if (right < rightSoftMin) {
                     right = rightSoftMin;              
-                }           
+                }          
             } else if (ref.l1 > 14100 && ref.r1 < 14270) {
                 left *= 0.90;
                 turnDirection = 1;
                 if (left < leftSoftMin) {
                     left = leftSoftMin;
-                }               
+                }       
             }   
             
             //Ulosajo ja takaisin kääntyminen
@@ -233,7 +233,7 @@ int main()
             
             
             
-            if (ref.l3 > 15000 && ref.r3 > 15000) {
+            if (ref.l3 > 13000 && ref.r3 > 13000) {
                 motor_stop();
                 break;
             }
