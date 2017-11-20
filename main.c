@@ -1,32 +1,572 @@
-/* ========================================
- *
- * Copyright YOUR COMPANY, THE YEAR
- * All Rights Reserved
- * UNPUBLISHED, LICENSED SOFTWARE.
- *
- * CONFIDENTIAL AND PROPRIETARY INFORMATION
- * WHICH IS THE PROPERTY OF your company.
- *
- * ========================================
-*/
-#include "project.h"
-#include <stdio.h>
-
-int main(void)
-{
-    CyGlobalIntEnable; /* Enable global interrupts. */
-
-    /* Place your initialization/startup code here (e.g. MyInst_Start()) */
-    UART_1_Start();
+/**
+* @mainpage ZumoBot Project
+* @brief    You can make your own ZumoBot with various sensors.
+* @details  <br><br>
+    <p>
+    <B>General</B><br>
+    You will use Pololu Zumo Shields for your robot project with CY8CKIT-059(PSoC 5LP) from Cypress semiconductor.This 
+    library has basic methods of various sensors and communications so that you can make what you want with them. <br> 
+    <br><br>
+    </p>
     
-    printf("Hello World!\n");
+    <p>
+    <B>Sensors</B><br>
+    &nbsp;Included: <br>
+        &nbsp;&nbsp;&nbsp;&nbsp;LSM303D: Accelerometer & Magnetometer<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;L3GD20H: Gyroscope<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Reflectance sensor<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;Motors
+    &nbsp;Wii nunchuck<br>
+    &nbsp;TSOP-2236: IR Receiver<br>
+    &nbsp;HC-SR04: Ultrasonic sensor<br>
+    &nbsp;APDS-9301: Ambient light sensor<br>
+    &nbsp;IR LED <br><br><br>
+    </p>
+    
+    <p>
+    <B>Communication</B><br>
+    I2C, UART, Serial<br>
+    </p>
+*/
+
+#include <project.h>
+#include <stdio.h>
+#include "Motor.h"
+#include "Ultra.h"
+#include "Nunchuk.h"
+#include "Reflectance.h"
+#include "I2C_made.h"
+#include "Gyro.h"
+#include "Accel_magnet.h"
+#include "IR.h"
+#include "Ambient.h"
+#include "Beep.h"
+
+int rread(void);
+
+/**
+ * @file    main.c
+ * @brief   
+ * @details  ** You should enable global interrupt for operating properly. **<br>&nbsp;&nbsp;&nbsp;CyGlobalIntEnable;<br>
+*/
+
+
+//battery level//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+    ADC_Battery_Start();        
+    int16 adcresult =0;
+    float volts = 0.0;
+    
+    struct sensors_ ref;
+    struct sensors_ dig;
+
+    printf("\nBoot\n");
+
+    //BatteryLed_Write(1); // Switch led on 
+    BatteryLed_Write(0); // Switch led off 
+    uint8 button;
+    button = SW1_Read(); // read SW1 on pSoC board
+    
+    while (button == 1) {
+        button = SW1_Read();
+        CyDelay(50);
+        
+        
+        
+        BatteryLed_Write(0);
+        ADC_Battery_StartConvert();
+        if(ADC_Battery_IsEndConversion(ADC_Battery_WAIT_FOR_RESULT)) {   // wait for get ADC converted value
+            adcresult = ADC_Battery_GetResult16();
+            //volts = ADC_Battery_CountsTo_Volts(adcresult);                  // convert value to Volts
+            volts = (float)adcresult / 4095 * 5 * 1.5;
+        
+            // If you want to print value
+            printf("%d %f\r\n",adcresult, volts);
+        }
+        CyDelay(500);
+        
+
+        if (volts < 4) {
+            BatteryLed_Write(1);
+            CyDelay(500);
+        }   
+    }
+    
+    CyDelay(1000);
+
     for(;;)
     {
-        /* Place your application code here. */
+        /*
+        Beep(2000, 30);
+        Beep(2000, 60);
+        Beep(150, 90);
+        Beep(12000, 120);
+        Beep(1, 150);
+        Beep(1, 180);
+        Beep(1, 210);
+        Beep(1, 240);
+        */
+        CyDelay(1500);
+                     // motor start
+        
+        sensor_isr_StartEx(sensor_isr_handler);
+        
+        reflectance_start();
+
+        IR_led_Write(1);
+            //int maxSpeed = 150;
+            int left = 248;
+            int right = 255;
+            int leftMin = 70;
+            int rightMin = 70;
+            int rightHardMin = 0;
+            int leftHardMin = 0;
+            int leftSoftMin = 140;
+            int rightSoftMin = 140;
+            int turnDirection = 0;
+        reflectance_set_threshold(15500, 14100, 14270, 16000);
+        for(;;)
+        {   
+            reflectance_read(&ref);
+            printf("%d %d %d %d \r\n", ref.l3, ref.l1, ref.r1, ref.r3);       //print out each period of reflectance sensors
+            reflectance_digital(&dig);      //print out 0 or 1 according to results of reflectance period
+            printf("%d %d %d %d \r\n", dig.l3, dig.l1, dig.r1, dig.r3);        //print out 0 or 1 according to results of reflectance period
+            
+           
+            
+            motor_start();
+            
+            
+            
+            motor_turn(left, right, 1); 
+            
+            
+            
+            
+            
+            /*
+            if (ref.l3 > 12000) {
+                right *= 1.2;
+                left *= 0.8;
+            }
+            if (ref.r3 > 12000) {
+                left *= 1.2;
+                right *= 0.8;    
+            }
+            */
+            
+            //Turndirection 1 on vasen 2 oikea
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            //Suoraan
+            if (ref.l1 > 14100 && ref.r1 > 14270) {
+                left = 217;
+                right = 225;
+                turnDirection = 0;
+            }
+            
+            //Loivempi
+            if (ref.l1 < 12000 && ref.r1 > 12000) {
+                right *= 0.90;
+                turnDirection = 2;
+                if (right < rightMin) {
+                    right = rightMin;              
+                }           
+            } else if (ref.l1 > 13000 && ref.r1 < 13000) {
+                left *= 0.90;
+                turnDirection = 1;
+                if (left < leftMin) {
+                    left = leftMin;
+                }   
+                //Jyrkin
+            } else if (ref.l1 < 10000 && ref.r1 > 10000) {
+                right *= 0.75;
+                turnDirection = 2;
+                if (right < rightHardMin) {
+                    right = rightHardMin;              
+                }           
+            } else if (ref.l1 > 10000 && ref.r1 < 10000) {
+                left *= 0.75;
+                turnDirection = 1;
+                if (left < leftHardMin) {
+                    left = leftHardMin;
+                }    
+                //Loivin
+            } else if (ref.l1 < 14100 && ref.r1 > 14270) {
+                right *= 0.90;
+                turnDirection = 2;
+                if (right < rightSoftMin) {
+                    right = rightSoftMin;              
+                }           
+            } else if (ref.l1 > 14100 && ref.r1 < 14270) {
+                left *= 0.90;
+                turnDirection = 1;
+                if (left < leftSoftMin) {
+                    left = leftSoftMin;
+                }               
+            }   
+            
+            //Ulosajo ja takaisin kääntyminen
+            if (ref.l1 < 14100 && ref.r1 < 14270) {
+                if (turnDirection == 1) {
+                    left *= 0.5;
+                } else if (turnDirection == 2) {
+                    right *= 0.5;
+                } else {
+                    turnDirection = 0;
+                }
+            }
+            
+            
+            
+            if (ref.l3 > 15000 && ref.r3 > 15000) {
+                motor_stop();
+                break;
+            }
+            
+            
+            
+            
+            
+            
+            
+            
+            /*
+            if (ref.r1 < 14000 && ref.l1 < 14000) {
+                left = 60;
+                right = 68;
+            }
+            if (ref.r1 > 14000 && ref.l1 < 14000) {
+                right *= 1.1;
+                left *= 0.9;
+            }
+            if (ref.r1 > 14000 && ref.l1 < 14000) {
+                left *= 1.1;
+                right *= 0.9;
+            */
+            
+            
+            /* else if (ref.r1 > 14000 && ref.l1 > 14000 
+                && ref.r3 > 14000 && ref.l3 > 14000) {
+                    left = 0;
+                    right = 0;
+                }
+            */
+    
+          //  break;
+        }
+       
+        
+        
+        
+       /*
+        Testirata
+        motor_turn(200,208,2100);     // turn
+        motor_turn(255,0,305);      //90 Oikealle
+        motor_turn(200,208,1500);
+        motor_turn(255,0,305);
+        motor_turn(200,208,1600);
+        motor_turn(255,0,305);
+        motor_turn(90,55,6500);
+        //motor_backward(100,2000);    // movinb backward
+        
+        */
+           
+       // motor_stop();               // motor stop
+       // CyDelay(500);
+    }           
+}   
+//*/
+
+
+/*//ultra sonic sensor//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+    Ultra_Start();                          // Ultra Sonic Start function
+    while(1) {
+        //If you want to print out the value  
+        printf("distance = %5.0f\r\n", Ultra_GetDistance());
+        CyDelay(1000);
+    }
+}   
+//*/
+
+
+/*//nunchuk//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+  
+    nunchuk_start();
+    nunchuk_init();
+    
+    for(;;)
+    {    
+        nunchuk_read();
+    }
+}   
+//*/
+
+
+/*//IR receiver//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+    
+    unsigned int IR_val; 
+    
+    for(;;)
+    {
+       IR_val = get_IR();
+       printf("%x\r\n\n",IR_val);
+    }    
+ }   
+//*/
+
+
+/*//Ambient light sensor//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+    
+    I2C_Start();
+    
+    I2C_write(0x29,0x80,0x00);          // set to power down
+    I2C_write(0x29,0x80,0x03);          // set to power on
+    
+    for(;;)
+    {    
+        uint8 Data0Low,Data0High,Data1Low,Data1High;
+        Data0Low = I2C_read(0x29,CH0_L);
+        Data0High = I2C_read(0x29,CH0_H);
+        Data1Low = I2C_read(0x29,CH1_L);
+        Data1High = I2C_read(0x29,CH1_H);
+        
+        uint8 CH0, CH1;
+        CH0 = convert_raw(Data0Low,Data0High);      // combine Data0
+        CH1 = convert_raw(Data1Low,Data1High);      // combine Data1
+
+        double Ch0 = CH0;
+        double Ch1 = CH1;
+        
+        double data = 0;
+        data = getLux(Ch0,Ch1);
+        
+        // If you want to print out data
+        //printf("%lf\r\n",data);    
+    }    
+ }   
+//*/
+
+
+/*//accelerometer//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+  
+    I2C_Start();
+  
+    uint8 X_L_A, X_H_A, Y_L_A, Y_H_A, Z_L_A, Z_H_A;
+    int16 X_AXIS_A, Y_AXIS_A, Z_AXIS_A;
+    
+    I2C_write(ACCEL_MAG_ADDR, ACCEL_CTRL1_REG, 0x37);           // set accelerometer & magnetometer into active mode
+    I2C_write(ACCEL_MAG_ADDR, ACCEL_CTRL7_REG, 0x22);
+    
+    
+    for(;;)
+    {
+        //print out accelerometer output
+        X_L_A = I2C_read(ACCEL_MAG_ADDR, OUT_X_L_A);
+        X_H_A = I2C_read(ACCEL_MAG_ADDR, OUT_X_H_A);
+        X_AXIS_A = convert_raw(X_L_A, X_H_A);
+        
+        Y_L_A = I2C_read(ACCEL_MAG_ADDR, OUT_Y_L_A);
+        Y_H_A = I2C_read(ACCEL_MAG_ADDR, OUT_Y_H_A);
+        Y_AXIS_A = convert_raw(Y_L_A, Y_H_A);
+        
+        Z_L_A = I2C_read(ACCEL_MAG_ADDR, OUT_Z_L_A);
+        Z_H_A = I2C_read(ACCEL_MAG_ADDR, OUT_Z_H_A);
+        Z_AXIS_A = convert_raw(Z_L_A, Z_H_A);
+        
+        printf("ACCEL: %d %d %d %d %d %d \r\n", X_L_A, X_H_A, Y_L_A, Y_H_A, Z_L_A, Z_H_A);
+        value_convert_accel(X_AXIS_A, Y_AXIS_A, Z_AXIS_A);
+        printf("\n");
+        
+        CyDelay(50);
+    }
+}   
+//*/
+
+
+/*//reflectance//
+int main()
+{
+    struct sensors_ ref;
+    struct sensors_ dig;
+    CyGlobalIntEnable; 
+    UART_1_Start();
+  
+    sensor_isr_StartEx(sensor_isr_handler);
+    
+    reflectance_start();
+
+    IR_led_Write(1);
+    for(;;)
+    {
+        reflectance_read(&ref);
+        printf("%d %d %d %d \r\n", ref.l3, ref.l1, ref.r1, ref.r3);       //print out each period of reflectance sensors
+        reflectance_digital(&dig);      //print out 0 or 1 according to results of reflectance period
+        printf("%d %d %d %d \r\n", dig.l3, dig.l1, dig.r1, dig.r3);        //print out 0 or 1 according to results of reflectance period
+        
+        CyDelay(500);
+    }
+}   
+//*/
+
+ /* //motor//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+
+    motor_start();              // motor start
+
+    motor_forward(100,2000);     // moving forward
+    motor_turn(200,50,2000);     // turn
+    motor_turn(50,200,2000);     // turn
+    motor_backward(100,2000);    // movinb backward
+       
+    motor_stop();               // motor stop
+    
+    for(;;)
+    {
+
     }
 }
+//*/
+    
 
- 
+/*//gyroscope//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+  
+    I2C_Start();
+  
+    uint8 X_L_G, X_H_G, Y_L_G, Y_H_G, Z_L_G, Z_H_G;
+    int16 X_AXIS_G, Y_AXIS_G, Z_AXIS_G;
+    
+    I2C_write(GYRO_ADDR, GYRO_CTRL1_REG, 0x0F);             // set gyroscope into active mode
+    I2C_write(GYRO_ADDR, GYRO_CTRL4_REG, 0x30);             // set full scale selection to 2000dps    
+    
+    for(;;)
+    {
+        //print out gyroscope output
+        X_L_G = I2C_read(GYRO_ADDR, OUT_X_AXIS_L);
+        X_H_G = I2C_read(GYRO_ADDR, OUT_X_AXIS_H);
+        X_AXIS_G = convert_raw(X_H_G, X_L_G);
+        
+        
+        Y_L_G = I2C_read(GYRO_ADDR, OUT_Y_AXIS_L);
+        Y_H_G = I2C_read(GYRO_ADDR, OUT_Y_AXIS_H);
+        Y_AXIS_G = convert_raw(Y_H_G, Y_L_G);
+        
+        
+        Z_L_G = I2C_read(GYRO_ADDR, OUT_Z_AXIS_L);
+        Z_H_G = I2C_read(GYRO_ADDR, OUT_Z_AXIS_H);
+        Z_AXIS_G = convert_raw(Z_H_G, Z_L_G);
+     
+        // If you want to print value
+        printf("%d %d %d \r\n", X_AXIS_G, Y_AXIS_G, Z_AXIS_G);
+        CyDelay(50);
+    }
+}   
+//*/
+
+
+/*//magnetometer//
+int main()
+{
+    CyGlobalIntEnable; 
+    UART_1_Start();
+  
+    I2C_Start();
+   
+    uint8 X_L_M, X_H_M, Y_L_M, Y_H_M, Z_L_M, Z_H_M;
+    int16 X_AXIS, Y_AXIS, Z_AXIS;
+    
+    I2C_write(GYRO_ADDR, GYRO_CTRL1_REG, 0x0F);             // set gyroscope into active mode
+    I2C_write(GYRO_ADDR, GYRO_CTRL4_REG, 0x30);             // set full scale selection to 2000dps
+    I2C_write(ACCEL_MAG_ADDR, ACCEL_CTRL1_REG, 0x37);           // set accelerometer & magnetometer into active mode
+    I2C_write(ACCEL_MAG_ADDR, ACCEL_CTRL7_REG, 0x22);
+    
+    
+    for(;;)
+    {
+        X_L_M = I2C_read(ACCEL_MAG_ADDR, OUT_X_L_M);
+        X_H_M = I2C_read(ACCEL_MAG_ADDR, OUT_X_H_M);
+        X_AXIS = convert_raw(X_L_M, X_H_M);
+        
+        Y_L_M = I2C_read(ACCEL_MAG_ADDR, OUT_Y_L_M);
+        Y_H_M = I2C_read(ACCEL_MAG_ADDR, OUT_Y_H_M);
+        Y_AXIS = convert_raw(Y_L_M, Y_H_M);
+        
+        Z_L_M = I2C_read(ACCEL_MAG_ADDR, OUT_Z_L_M);
+        Z_H_M = I2C_read(ACCEL_MAG_ADDR, OUT_Z_H_M);
+        Z_AXIS = convert_raw(Z_L_M, Z_H_M);
+        
+        heading(X_AXIS, Y_AXIS);
+        printf("MAGNET: %d %d %d %d %d %d \r\n", X_L_M, X_H_M, Y_L_M, Y_H_M, Z_L_M, Z_H_M);
+        printf("%d %d %d \r\n", X_AXIS,Y_AXIS, Z_AXIS);
+        CyDelay(50);      
+    }
+}   
+//*/
+
+
+#if 0
+int rread(void)
+{
+    SC0_SetDriveMode(PIN_DM_STRONG);
+    SC0_Write(1);
+    CyDelayUs(10);
+    SC0_SetDriveMode(PIN_DM_DIG_HIZ);
+    Timer_1_Start();
+    uint16_t start = Timer_1_ReadCounter();
+    uint16_t end = 0;
+    while(!(Timer_1_ReadStatusRegister() & Timer_1_STATUS_TC)) {
+        if(SC0_Read() == 0 && end == 0) {
+            end = Timer_1_ReadCounter();
+        }
+    }
+    Timer_1_Stop();
+    
+    return (start - end);
+}
+#endif
+
+/* Don't remove the functions below */
 int _write(int file, char *ptr, int len)
 {
     (void)file; /* Parameter is not used, suppress unused argument warning */
@@ -60,5 +600,4 @@ int _read (int file, char *ptr, int count)
     }
     return chs;
 }
-
 /* [] END OF FILE */
