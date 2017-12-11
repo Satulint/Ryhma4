@@ -1,0 +1,1674 @@
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 1
+
+
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 1
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"Motor.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.motor_start,"ax",%progbits
+  19              		.align	2
+  20              		.global	motor_start
+  21              		.thumb
+  22              		.thumb_func
+  23              		.type	motor_start, %function
+  24              	motor_start:
+  25              	.LFB63:
+  26              		.file 1 "ZumoLibrary\\Motor.c"
+   1:ZumoLibrary/Motor.c **** /**
+   2:ZumoLibrary/Motor.c ****  * @file    Motor.c
+   3:ZumoLibrary/Motor.c ****  * @brief   Basic methods for operating motor sensor. For more details, please refer to Motor.h fil
+   4:ZumoLibrary/Motor.c ****  * @details included in Zumo shield
+   5:ZumoLibrary/Motor.c **** */
+   6:ZumoLibrary/Motor.c **** #include "Motor.h"
+   7:ZumoLibrary/Motor.c **** 
+   8:ZumoLibrary/Motor.c **** 
+   9:ZumoLibrary/Motor.c **** /**
+  10:ZumoLibrary/Motor.c **** * @brief    Starting motor sensors
+  11:ZumoLibrary/Motor.c **** * @details  
+  12:ZumoLibrary/Motor.c **** */
+  13:ZumoLibrary/Motor.c **** void motor_start()
+  14:ZumoLibrary/Motor.c **** {
+  27              		.loc 1 14 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 0, uses_anonymous_args = 0
+  31 0000 08B5     		push	{r3, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 3, -8
+  34              		.cfi_offset 14, -4
+  15:ZumoLibrary/Motor.c ****     PWM_Start();
+  35              		.loc 1 15 0
+  36 0002 FFF7FEFF 		bl	PWM_Start
+  37              	.LVL0:
+  38 0006 08BD     		pop	{r3, pc}
+  39              		.cfi_endproc
+  40              	.LFE63:
+  41              		.size	motor_start, .-motor_start
+  42              		.section	.text.motor_stop,"ax",%progbits
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 2
+
+
+  43              		.align	2
+  44              		.global	motor_stop
+  45              		.thumb
+  46              		.thumb_func
+  47              		.type	motor_stop, %function
+  48              	motor_stop:
+  49              	.LFB64:
+  16:ZumoLibrary/Motor.c **** }
+  17:ZumoLibrary/Motor.c **** 
+  18:ZumoLibrary/Motor.c **** 
+  19:ZumoLibrary/Motor.c **** /**
+  20:ZumoLibrary/Motor.c **** * @brief    Stopping motor sensors
+  21:ZumoLibrary/Motor.c **** * @details
+  22:ZumoLibrary/Motor.c **** */
+  23:ZumoLibrary/Motor.c **** void motor_stop()
+  24:ZumoLibrary/Motor.c **** {
+  50              		.loc 1 24 0
+  51              		.cfi_startproc
+  52              		@ args = 0, pretend = 0, frame = 0
+  53              		@ frame_needed = 0, uses_anonymous_args = 0
+  54 0000 08B5     		push	{r3, lr}
+  55              		.cfi_def_cfa_offset 8
+  56              		.cfi_offset 3, -8
+  57              		.cfi_offset 14, -4
+  25:ZumoLibrary/Motor.c ****     PWM_Stop();
+  58              		.loc 1 25 0
+  59 0002 FFF7FEFF 		bl	PWM_Stop
+  60              	.LVL1:
+  61 0006 08BD     		pop	{r3, pc}
+  62              		.cfi_endproc
+  63              	.LFE64:
+  64              		.size	motor_stop, .-motor_stop
+  65              		.section	.text.motor_forward,"ax",%progbits
+  66              		.align	2
+  67              		.global	motor_forward
+  68              		.thumb
+  69              		.thumb_func
+  70              		.type	motor_forward, %function
+  71              	motor_forward:
+  72              	.LFB65:
+  26:ZumoLibrary/Motor.c **** }
+  27:ZumoLibrary/Motor.c **** 
+  28:ZumoLibrary/Motor.c **** 
+  29:ZumoLibrary/Motor.c **** /**
+  30:ZumoLibrary/Motor.c **** * @brief    Moving motors forward
+  31:ZumoLibrary/Motor.c **** * @details  giveing same speed to each side of PWM to make motors go forward
+  32:ZumoLibrary/Motor.c **** * @param    uint8 speed : speed value
+  33:ZumoLibrary/Motor.c **** * @param    uint32 delay : delay time
+  34:ZumoLibrary/Motor.c **** */
+  35:ZumoLibrary/Motor.c **** void motor_forward(uint8 speed,uint32 delay)
+  36:ZumoLibrary/Motor.c **** {
+  73              		.loc 1 36 0
+  74              		.cfi_startproc
+  75              		@ args = 0, pretend = 0, frame = 0
+  76              		@ frame_needed = 0, uses_anonymous_args = 0
+  77              	.LVL2:
+  78 0000 38B5     		push	{r3, r4, r5, lr}
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 3
+
+
+  79              		.cfi_def_cfa_offset 16
+  80              		.cfi_offset 3, -16
+  81              		.cfi_offset 4, -12
+  82              		.cfi_offset 5, -8
+  83              		.cfi_offset 14, -4
+  84 0002 0446     		mov	r4, r0
+  85 0004 0D46     		mov	r5, r1
+  37:ZumoLibrary/Motor.c ****     MotorDirLeft_Write(0);      // set LeftMotor forward mode
+  86              		.loc 1 37 0
+  87 0006 0020     		movs	r0, #0
+  88              	.LVL3:
+  89 0008 FFF7FEFF 		bl	MotorDirLeft_Write
+  90              	.LVL4:
+  38:ZumoLibrary/Motor.c ****     MotorDirRight_Write(0);     // set RightMotor forward mode
+  91              		.loc 1 38 0
+  92 000c 0020     		movs	r0, #0
+  93 000e FFF7FEFF 		bl	MotorDirRight_Write
+  94              	.LVL5:
+  39:ZumoLibrary/Motor.c ****     PWM_WriteCompare1(speed); 
+  95              		.loc 1 39 0
+  96 0012 2046     		mov	r0, r4
+  97 0014 FFF7FEFF 		bl	PWM_WriteCompare1
+  98              	.LVL6:
+  40:ZumoLibrary/Motor.c ****     PWM_WriteCompare2(speed); 
+  99              		.loc 1 40 0
+ 100 0018 2046     		mov	r0, r4
+ 101 001a FFF7FEFF 		bl	PWM_WriteCompare2
+ 102              	.LVL7:
+  41:ZumoLibrary/Motor.c ****     CyDelay(delay);
+ 103              		.loc 1 41 0
+ 104 001e 2846     		mov	r0, r5
+ 105 0020 FFF7FEFF 		bl	CyDelay
+ 106              	.LVL8:
+ 107 0024 38BD     		pop	{r3, r4, r5, pc}
+ 108              		.cfi_endproc
+ 109              	.LFE65:
+ 110              		.size	motor_forward, .-motor_forward
+ 111 0026 00BF     		.section	.text.motor_turn,"ax",%progbits
+ 112              		.align	2
+ 113              		.global	motor_turn
+ 114              		.thumb
+ 115              		.thumb_func
+ 116              		.type	motor_turn, %function
+ 117              	motor_turn:
+ 118              	.LFB66:
+  42:ZumoLibrary/Motor.c **** }
+  43:ZumoLibrary/Motor.c **** 
+  44:ZumoLibrary/Motor.c **** 
+  45:ZumoLibrary/Motor.c **** /**
+  46:ZumoLibrary/Motor.c **** * @brief    Moving motors to make a turn 
+  47:ZumoLibrary/Motor.c **** * @details  moving left when l_speed < r_speed or moving right when l_speed > r_speed
+  48:ZumoLibrary/Motor.c **** * @param    uint8 l_speed : left motor speed value
+  49:ZumoLibrary/Motor.c **** * @param    uint8 r_speed : right motor speed value
+  50:ZumoLibrary/Motor.c **** * @param    uint32 delay : delay time
+  51:ZumoLibrary/Motor.c **** */
+  52:ZumoLibrary/Motor.c **** void motor_turn(uint8 l_speed, uint8 r_speed, uint32 delay)
+  53:ZumoLibrary/Motor.c **** {
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 4
+
+
+ 119              		.loc 1 53 0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 0
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123              	.LVL9:
+ 124 0000 38B5     		push	{r3, r4, r5, lr}
+ 125              		.cfi_def_cfa_offset 16
+ 126              		.cfi_offset 3, -16
+ 127              		.cfi_offset 4, -12
+ 128              		.cfi_offset 5, -8
+ 129              		.cfi_offset 14, -4
+ 130 0002 0D46     		mov	r5, r1
+ 131 0004 1446     		mov	r4, r2
+  54:ZumoLibrary/Motor.c ****     PWM_WriteCompare1(l_speed); 
+ 132              		.loc 1 54 0
+ 133 0006 FFF7FEFF 		bl	PWM_WriteCompare1
+ 134              	.LVL10:
+  55:ZumoLibrary/Motor.c ****     PWM_WriteCompare2(r_speed); 
+ 135              		.loc 1 55 0
+ 136 000a 2846     		mov	r0, r5
+ 137 000c FFF7FEFF 		bl	PWM_WriteCompare2
+ 138              	.LVL11:
+  56:ZumoLibrary/Motor.c ****     CyDelay(delay);
+ 139              		.loc 1 56 0
+ 140 0010 2046     		mov	r0, r4
+ 141 0012 FFF7FEFF 		bl	CyDelay
+ 142              	.LVL12:
+ 143 0016 38BD     		pop	{r3, r4, r5, pc}
+ 144              		.cfi_endproc
+ 145              	.LFE66:
+ 146              		.size	motor_turn, .-motor_turn
+ 147              		.section	.text.motor_backward,"ax",%progbits
+ 148              		.align	2
+ 149              		.global	motor_backward
+ 150              		.thumb
+ 151              		.thumb_func
+ 152              		.type	motor_backward, %function
+ 153              	motor_backward:
+ 154              	.LFB67:
+  57:ZumoLibrary/Motor.c **** }
+  58:ZumoLibrary/Motor.c **** 
+  59:ZumoLibrary/Motor.c **** 
+  60:ZumoLibrary/Motor.c **** /**
+  61:ZumoLibrary/Motor.c **** * @brief    Moving motors backward
+  62:ZumoLibrary/Motor.c **** * @details  setting backward mode to each motors and gives same speed to each side of PWM
+  63:ZumoLibrary/Motor.c **** * @param    uint8 speed : speed value
+  64:ZumoLibrary/Motor.c **** * @param    uint32 delay : delay time
+  65:ZumoLibrary/Motor.c **** */
+  66:ZumoLibrary/Motor.c **** void motor_backward(uint8 speed,uint32 delay)
+  67:ZumoLibrary/Motor.c **** {
+ 155              		.loc 1 67 0
+ 156              		.cfi_startproc
+ 157              		@ args = 0, pretend = 0, frame = 0
+ 158              		@ frame_needed = 0, uses_anonymous_args = 0
+ 159              	.LVL13:
+ 160 0000 38B5     		push	{r3, r4, r5, lr}
+ 161              		.cfi_def_cfa_offset 16
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 5
+
+
+ 162              		.cfi_offset 3, -16
+ 163              		.cfi_offset 4, -12
+ 164              		.cfi_offset 5, -8
+ 165              		.cfi_offset 14, -4
+ 166 0002 0446     		mov	r4, r0
+ 167 0004 0D46     		mov	r5, r1
+  68:ZumoLibrary/Motor.c ****     MotorDirLeft_Write(1);      // set LeftMotor backward mode
+ 168              		.loc 1 68 0
+ 169 0006 0120     		movs	r0, #1
+ 170              	.LVL14:
+ 171 0008 FFF7FEFF 		bl	MotorDirLeft_Write
+ 172              	.LVL15:
+  69:ZumoLibrary/Motor.c ****     MotorDirRight_Write(1);     // set RightMotor backward mode
+ 173              		.loc 1 69 0
+ 174 000c 0120     		movs	r0, #1
+ 175 000e FFF7FEFF 		bl	MotorDirRight_Write
+ 176              	.LVL16:
+  70:ZumoLibrary/Motor.c ****     PWM_WriteCompare1(speed); 
+ 177              		.loc 1 70 0
+ 178 0012 2046     		mov	r0, r4
+ 179 0014 FFF7FEFF 		bl	PWM_WriteCompare1
+ 180              	.LVL17:
+  71:ZumoLibrary/Motor.c ****     PWM_WriteCompare2(speed); 
+ 181              		.loc 1 71 0
+ 182 0018 2046     		mov	r0, r4
+ 183 001a FFF7FEFF 		bl	PWM_WriteCompare2
+ 184              	.LVL18:
+  72:ZumoLibrary/Motor.c ****     CyDelay(delay);
+ 185              		.loc 1 72 0
+ 186 001e 2846     		mov	r0, r5
+ 187 0020 FFF7FEFF 		bl	CyDelay
+ 188              	.LVL19:
+ 189 0024 38BD     		pop	{r3, r4, r5, pc}
+ 190              		.cfi_endproc
+ 191              	.LFE67:
+ 192              		.size	motor_backward, .-motor_backward
+ 193 0026 00BF     		.section	.text.motor_sharpTurn,"ax",%progbits
+ 194              		.align	2
+ 195              		.global	motor_sharpTurn
+ 196              		.thumb
+ 197              		.thumb_func
+ 198              		.type	motor_sharpTurn, %function
+ 199              	motor_sharpTurn:
+ 200              	.LFB68:
+  73:ZumoLibrary/Motor.c **** }
+  74:ZumoLibrary/Motor.c **** 
+  75:ZumoLibrary/Motor.c **** void motor_sharpTurn(uint8 l_speed, uint8 r_speed, uint32 delay, int dir)
+  76:ZumoLibrary/Motor.c **** {
+ 201              		.loc 1 76 0
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 0
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205              	.LVL20:
+ 206 0000 70B5     		push	{r4, r5, r6, lr}
+ 207              		.cfi_def_cfa_offset 16
+ 208              		.cfi_offset 4, -16
+ 209              		.cfi_offset 5, -12
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 6
+
+
+ 210              		.cfi_offset 6, -8
+ 211              		.cfi_offset 14, -4
+ 212 0002 0646     		mov	r6, r0
+ 213 0004 0D46     		mov	r5, r1
+ 214 0006 1446     		mov	r4, r2
+  77:ZumoLibrary/Motor.c ****     if (dir == 1) {
+ 215              		.loc 1 77 0
+ 216 0008 012B     		cmp	r3, #1
+ 217 000a 06D1     		bne	.L12
+  78:ZumoLibrary/Motor.c ****         MotorDirLeft_Write(1);
+ 218              		.loc 1 78 0
+ 219 000c 0120     		movs	r0, #1
+ 220              	.LVL21:
+ 221 000e FFF7FEFF 		bl	MotorDirLeft_Write
+ 222              	.LVL22:
+  79:ZumoLibrary/Motor.c ****         MotorDirRight_Write(0);
+ 223              		.loc 1 79 0
+ 224 0012 0020     		movs	r0, #0
+ 225 0014 FFF7FEFF 		bl	MotorDirRight_Write
+ 226              	.LVL23:
+ 227 0018 0EE0     		b	.L13
+ 228              	.LVL24:
+ 229              	.L12:
+  80:ZumoLibrary/Motor.c ****     } else if (dir == 2) {
+ 230              		.loc 1 80 0
+ 231 001a 022B     		cmp	r3, #2
+ 232 001c 06D1     		bne	.L14
+  81:ZumoLibrary/Motor.c ****         MotorDirLeft_Write(0);
+ 233              		.loc 1 81 0
+ 234 001e 0020     		movs	r0, #0
+ 235              	.LVL25:
+ 236 0020 FFF7FEFF 		bl	MotorDirLeft_Write
+ 237              	.LVL26:
+  82:ZumoLibrary/Motor.c ****         MotorDirRight_Write(1);
+ 238              		.loc 1 82 0
+ 239 0024 0120     		movs	r0, #1
+ 240 0026 FFF7FEFF 		bl	MotorDirRight_Write
+ 241              	.LVL27:
+ 242 002a 05E0     		b	.L13
+ 243              	.LVL28:
+ 244              	.L14:
+  83:ZumoLibrary/Motor.c ****     } else {
+  84:ZumoLibrary/Motor.c ****         MotorDirLeft_Write(0);
+ 245              		.loc 1 84 0
+ 246 002c 0020     		movs	r0, #0
+ 247              	.LVL29:
+ 248 002e FFF7FEFF 		bl	MotorDirLeft_Write
+ 249              	.LVL30:
+  85:ZumoLibrary/Motor.c ****         MotorDirRight_Write(0);
+ 250              		.loc 1 85 0
+ 251 0032 0020     		movs	r0, #0
+ 252 0034 FFF7FEFF 		bl	MotorDirRight_Write
+ 253              	.LVL31:
+ 254              	.L13:
+  86:ZumoLibrary/Motor.c ****     }
+  87:ZumoLibrary/Motor.c ****     PWM_WriteCompare1(l_speed);
+ 255              		.loc 1 87 0
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 7
+
+
+ 256 0038 3046     		mov	r0, r6
+ 257 003a FFF7FEFF 		bl	PWM_WriteCompare1
+ 258              	.LVL32:
+  88:ZumoLibrary/Motor.c ****     PWM_WriteCompare2(r_speed);
+ 259              		.loc 1 88 0
+ 260 003e 2846     		mov	r0, r5
+ 261 0040 FFF7FEFF 		bl	PWM_WriteCompare2
+ 262              	.LVL33:
+  89:ZumoLibrary/Motor.c ****     CyDelay(delay);
+ 263              		.loc 1 89 0
+ 264 0044 2046     		mov	r0, r4
+ 265 0046 FFF7FEFF 		bl	CyDelay
+ 266              	.LVL34:
+ 267 004a 70BD     		pop	{r4, r5, r6, pc}
+ 268              		.cfi_endproc
+ 269              	.LFE68:
+ 270              		.size	motor_sharpTurn, .-motor_sharpTurn
+ 271              		.text
+ 272              	.Letext0:
+ 273              		.file 2 "c:\\program files (x86)\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.
+ 274              		.file 3 "c:\\program files (x86)\\cypress\\psoc creator\\4.0\\psoc creator\\import\\gnu\\arm\\4.9.
+ 275              		.file 4 "Generated_Source\\PSoC5/cytypes.h"
+ 276              		.file 5 "Generated_Source\\PSoC5/PWM.h"
+ 277              		.file 6 "Generated_Source\\PSoC5/MotorDirLeft.h"
+ 278              		.file 7 "Generated_Source\\PSoC5/MotorDirRight.h"
+ 279              		.file 8 "Generated_Source\\PSoC5/core_cm3.h"
+ 280              		.file 9 "Generated_Source\\PSoC5/CyLib.h"
+ 281              		.section	.debug_info,"",%progbits
+ 282              	.Ldebug_info0:
+ 283 0000 F0030000 		.4byte	0x3f0
+ 284 0004 0400     		.2byte	0x4
+ 285 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 286 000a 04       		.byte	0x4
+ 287 000b 01       		.uleb128 0x1
+ 288 000c 15010000 		.4byte	.LASF33
+ 289 0010 01       		.byte	0x1
+ 290 0011 BE000000 		.4byte	.LASF34
+ 291 0015 D2000000 		.4byte	.LASF35
+ 292 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 293 001d 00000000 		.4byte	0
+ 294 0021 00000000 		.4byte	.Ldebug_line0
+ 295 0025 02       		.uleb128 0x2
+ 296 0026 01       		.byte	0x1
+ 297 0027 06       		.byte	0x6
+ 298 0028 59000000 		.4byte	.LASF0
+ 299 002c 02       		.uleb128 0x2
+ 300 002d 01       		.byte	0x1
+ 301 002e 08       		.byte	0x8
+ 302 002f 6B000000 		.4byte	.LASF1
+ 303 0033 02       		.uleb128 0x2
+ 304 0034 02       		.byte	0x2
+ 305 0035 05       		.byte	0x5
+ 306 0036 2E020000 		.4byte	.LASF2
+ 307 003a 02       		.uleb128 0x2
+ 308 003b 02       		.byte	0x2
+ 309 003c 07       		.byte	0x7
+ 310 003d 5F020000 		.4byte	.LASF3
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 8
+
+
+ 311 0041 03       		.uleb128 0x3
+ 312 0042 00000000 		.4byte	.LASF9
+ 313 0046 02       		.byte	0x2
+ 314 0047 3F       		.byte	0x3f
+ 315 0048 4C000000 		.4byte	0x4c
+ 316 004c 02       		.uleb128 0x2
+ 317 004d 04       		.byte	0x4
+ 318 004e 05       		.byte	0x5
+ 319 004f 4B020000 		.4byte	.LASF4
+ 320 0053 02       		.uleb128 0x2
+ 321 0054 04       		.byte	0x4
+ 322 0055 07       		.byte	0x7
+ 323 0056 79000000 		.4byte	.LASF5
+ 324 005a 02       		.uleb128 0x2
+ 325 005b 08       		.byte	0x8
+ 326 005c 05       		.byte	0x5
+ 327 005d 1B020000 		.4byte	.LASF6
+ 328 0061 02       		.uleb128 0x2
+ 329 0062 08       		.byte	0x8
+ 330 0063 07       		.byte	0x7
+ 331 0064 B8010000 		.4byte	.LASF7
+ 332 0068 04       		.uleb128 0x4
+ 333 0069 04       		.byte	0x4
+ 334 006a 05       		.byte	0x5
+ 335 006b 696E7400 		.ascii	"int\000"
+ 336 006f 02       		.uleb128 0x2
+ 337 0070 04       		.byte	0x4
+ 338 0071 07       		.byte	0x7
+ 339 0072 A3010000 		.4byte	.LASF8
+ 340 0076 03       		.uleb128 0x3
+ 341 0077 4B000000 		.4byte	.LASF10
+ 342 007b 03       		.byte	0x3
+ 343 007c 2C       		.byte	0x2c
+ 344 007d 41000000 		.4byte	0x41
+ 345 0081 05       		.uleb128 0x5
+ 346 0082 45000000 		.4byte	.LASF11
+ 347 0086 04       		.byte	0x4
+ 348 0087 9201     		.2byte	0x192
+ 349 0089 2C000000 		.4byte	0x2c
+ 350 008d 05       		.uleb128 0x5
+ 351 008e 0E010000 		.4byte	.LASF12
+ 352 0092 04       		.byte	0x4
+ 353 0093 9401     		.2byte	0x194
+ 354 0095 53000000 		.4byte	0x53
+ 355 0099 02       		.uleb128 0x2
+ 356 009a 04       		.byte	0x4
+ 357 009b 04       		.byte	0x4
+ 358 009c 53000000 		.4byte	.LASF13
+ 359 00a0 02       		.uleb128 0x2
+ 360 00a1 08       		.byte	0x8
+ 361 00a2 04       		.byte	0x4
+ 362 00a3 AC000000 		.4byte	.LASF14
+ 363 00a7 02       		.uleb128 0x2
+ 364 00a8 01       		.byte	0x1
+ 365 00a9 08       		.byte	0x8
+ 366 00aa 29020000 		.4byte	.LASF15
+ 367 00ae 02       		.uleb128 0x2
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 9
+
+
+ 368 00af 04       		.byte	0x4
+ 369 00b0 07       		.byte	0x7
+ 370 00b1 12020000 		.4byte	.LASF16
+ 371 00b5 06       		.uleb128 0x6
+ 372 00b6 CF010000 		.4byte	.LASF17
+ 373 00ba 01       		.byte	0x1
+ 374 00bb 0D       		.byte	0xd
+ 375 00bc 00000000 		.4byte	.LFB63
+ 376 00c0 08000000 		.4byte	.LFE63-.LFB63
+ 377 00c4 01       		.uleb128 0x1
+ 378 00c5 9C       		.byte	0x9c
+ 379 00c6 D4000000 		.4byte	0xd4
+ 380 00ca 07       		.uleb128 0x7
+ 381 00cb 06000000 		.4byte	.LVL0
+ 382 00cf 94030000 		.4byte	0x394
+ 383 00d3 00       		.byte	0
+ 384 00d4 06       		.uleb128 0x6
+ 385 00d5 B3000000 		.4byte	.LASF18
+ 386 00d9 01       		.byte	0x1
+ 387 00da 17       		.byte	0x17
+ 388 00db 00000000 		.4byte	.LFB64
+ 389 00df 08000000 		.4byte	.LFE64-.LFB64
+ 390 00e3 01       		.uleb128 0x1
+ 391 00e4 9C       		.byte	0x9c
+ 392 00e5 F3000000 		.4byte	0xf3
+ 393 00e9 07       		.uleb128 0x7
+ 394 00ea 06000000 		.4byte	.LVL1
+ 395 00ee 9B030000 		.4byte	0x39b
+ 396 00f2 00       		.byte	0
+ 397 00f3 08       		.uleb128 0x8
+ 398 00f4 9E000000 		.4byte	.LASF21
+ 399 00f8 01       		.byte	0x1
+ 400 00f9 23       		.byte	0x23
+ 401 00fa 00000000 		.4byte	.LFB65
+ 402 00fe 26000000 		.4byte	.LFE65-.LFB65
+ 403 0102 01       		.uleb128 0x1
+ 404 0103 9C       		.byte	0x9c
+ 405 0104 85010000 		.4byte	0x185
+ 406 0108 09       		.uleb128 0x9
+ 407 0109 0C020000 		.4byte	.LASF19
+ 408 010d 01       		.byte	0x1
+ 409 010e 23       		.byte	0x23
+ 410 010f 81000000 		.4byte	0x81
+ 411 0113 00000000 		.4byte	.LLST0
+ 412 0117 09       		.uleb128 0x9
+ 413 0118 65000000 		.4byte	.LASF20
+ 414 011c 01       		.byte	0x1
+ 415 011d 23       		.byte	0x23
+ 416 011e 8D000000 		.4byte	0x8d
+ 417 0122 21000000 		.4byte	.LLST1
+ 418 0126 0A       		.uleb128 0xa
+ 419 0127 0C000000 		.4byte	.LVL4
+ 420 012b A2030000 		.4byte	0x3a2
+ 421 012f 39010000 		.4byte	0x139
+ 422 0133 0B       		.uleb128 0xb
+ 423 0134 01       		.uleb128 0x1
+ 424 0135 50       		.byte	0x50
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 10
+
+
+ 425 0136 01       		.uleb128 0x1
+ 426 0137 30       		.byte	0x30
+ 427 0138 00       		.byte	0
+ 428 0139 0A       		.uleb128 0xa
+ 429 013a 12000000 		.4byte	.LVL5
+ 430 013e B3030000 		.4byte	0x3b3
+ 431 0142 4C010000 		.4byte	0x14c
+ 432 0146 0B       		.uleb128 0xb
+ 433 0147 01       		.uleb128 0x1
+ 434 0148 50       		.byte	0x50
+ 435 0149 01       		.uleb128 0x1
+ 436 014a 30       		.byte	0x30
+ 437 014b 00       		.byte	0
+ 438 014c 0A       		.uleb128 0xa
+ 439 014d 18000000 		.4byte	.LVL6
+ 440 0151 C4030000 		.4byte	0x3c4
+ 441 0155 60010000 		.4byte	0x160
+ 442 0159 0B       		.uleb128 0xb
+ 443 015a 01       		.uleb128 0x1
+ 444 015b 50       		.byte	0x50
+ 445 015c 02       		.uleb128 0x2
+ 446 015d 74       		.byte	0x74
+ 447 015e 00       		.sleb128 0
+ 448 015f 00       		.byte	0
+ 449 0160 0A       		.uleb128 0xa
+ 450 0161 1E000000 		.4byte	.LVL7
+ 451 0165 D5030000 		.4byte	0x3d5
+ 452 0169 74010000 		.4byte	0x174
+ 453 016d 0B       		.uleb128 0xb
+ 454 016e 01       		.uleb128 0x1
+ 455 016f 50       		.byte	0x50
+ 456 0170 02       		.uleb128 0x2
+ 457 0171 74       		.byte	0x74
+ 458 0172 00       		.sleb128 0
+ 459 0173 00       		.byte	0
+ 460 0174 0C       		.uleb128 0xc
+ 461 0175 24000000 		.4byte	.LVL8
+ 462 0179 E6030000 		.4byte	0x3e6
+ 463 017d 0B       		.uleb128 0xb
+ 464 017e 01       		.uleb128 0x1
+ 465 017f 50       		.byte	0x50
+ 466 0180 02       		.uleb128 0x2
+ 467 0181 75       		.byte	0x75
+ 468 0182 00       		.sleb128 0
+ 469 0183 00       		.byte	0
+ 470 0184 00       		.byte	0
+ 471 0185 08       		.uleb128 0x8
+ 472 0186 54020000 		.4byte	.LASF22
+ 473 018a 01       		.byte	0x1
+ 474 018b 34       		.byte	0x34
+ 475 018c 00000000 		.4byte	.LFB66
+ 476 0190 18000000 		.4byte	.LFE66-.LFB66
+ 477 0194 01       		.uleb128 0x1
+ 478 0195 9C       		.byte	0x9c
+ 479 0196 F5010000 		.4byte	0x1f5
+ 480 019a 09       		.uleb128 0x9
+ 481 019b B0010000 		.4byte	.LASF23
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 11
+
+
+ 482 019f 01       		.byte	0x1
+ 483 01a0 34       		.byte	0x34
+ 484 01a1 81000000 		.4byte	0x81
+ 485 01a5 3F000000 		.4byte	.LLST2
+ 486 01a9 09       		.uleb128 0x9
+ 487 01aa 19000000 		.4byte	.LASF24
+ 488 01ae 01       		.byte	0x1
+ 489 01af 34       		.byte	0x34
+ 490 01b0 81000000 		.4byte	0x81
+ 491 01b4 60000000 		.4byte	.LLST3
+ 492 01b8 09       		.uleb128 0x9
+ 493 01b9 65000000 		.4byte	.LASF20
+ 494 01bd 01       		.byte	0x1
+ 495 01be 34       		.byte	0x34
+ 496 01bf 8D000000 		.4byte	0x8d
+ 497 01c3 81000000 		.4byte	.LLST4
+ 498 01c7 07       		.uleb128 0x7
+ 499 01c8 0A000000 		.4byte	.LVL10
+ 500 01cc C4030000 		.4byte	0x3c4
+ 501 01d0 0A       		.uleb128 0xa
+ 502 01d1 10000000 		.4byte	.LVL11
+ 503 01d5 D5030000 		.4byte	0x3d5
+ 504 01d9 E4010000 		.4byte	0x1e4
+ 505 01dd 0B       		.uleb128 0xb
+ 506 01de 01       		.uleb128 0x1
+ 507 01df 50       		.byte	0x50
+ 508 01e0 02       		.uleb128 0x2
+ 509 01e1 75       		.byte	0x75
+ 510 01e2 00       		.sleb128 0
+ 511 01e3 00       		.byte	0
+ 512 01e4 0C       		.uleb128 0xc
+ 513 01e5 16000000 		.4byte	.LVL12
+ 514 01e9 E6030000 		.4byte	0x3e6
+ 515 01ed 0B       		.uleb128 0xb
+ 516 01ee 01       		.uleb128 0x1
+ 517 01ef 50       		.byte	0x50
+ 518 01f0 02       		.uleb128 0x2
+ 519 01f1 74       		.byte	0x74
+ 520 01f2 00       		.sleb128 0
+ 521 01f3 00       		.byte	0
+ 522 01f4 00       		.byte	0
+ 523 01f5 08       		.uleb128 0x8
+ 524 01f6 0A000000 		.4byte	.LASF25
+ 525 01fa 01       		.byte	0x1
+ 526 01fb 42       		.byte	0x42
+ 527 01fc 00000000 		.4byte	.LFB67
+ 528 0200 26000000 		.4byte	.LFE67-.LFB67
+ 529 0204 01       		.uleb128 0x1
+ 530 0205 9C       		.byte	0x9c
+ 531 0206 87020000 		.4byte	0x287
+ 532 020a 09       		.uleb128 0x9
+ 533 020b 0C020000 		.4byte	.LASF19
+ 534 020f 01       		.byte	0x1
+ 535 0210 42       		.byte	0x42
+ 536 0211 81000000 		.4byte	0x81
+ 537 0215 9F000000 		.4byte	.LLST5
+ 538 0219 09       		.uleb128 0x9
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 12
+
+
+ 539 021a 65000000 		.4byte	.LASF20
+ 540 021e 01       		.byte	0x1
+ 541 021f 42       		.byte	0x42
+ 542 0220 8D000000 		.4byte	0x8d
+ 543 0224 C0000000 		.4byte	.LLST6
+ 544 0228 0A       		.uleb128 0xa
+ 545 0229 0C000000 		.4byte	.LVL15
+ 546 022d A2030000 		.4byte	0x3a2
+ 547 0231 3B020000 		.4byte	0x23b
+ 548 0235 0B       		.uleb128 0xb
+ 549 0236 01       		.uleb128 0x1
+ 550 0237 50       		.byte	0x50
+ 551 0238 01       		.uleb128 0x1
+ 552 0239 31       		.byte	0x31
+ 553 023a 00       		.byte	0
+ 554 023b 0A       		.uleb128 0xa
+ 555 023c 12000000 		.4byte	.LVL16
+ 556 0240 B3030000 		.4byte	0x3b3
+ 557 0244 4E020000 		.4byte	0x24e
+ 558 0248 0B       		.uleb128 0xb
+ 559 0249 01       		.uleb128 0x1
+ 560 024a 50       		.byte	0x50
+ 561 024b 01       		.uleb128 0x1
+ 562 024c 31       		.byte	0x31
+ 563 024d 00       		.byte	0
+ 564 024e 0A       		.uleb128 0xa
+ 565 024f 18000000 		.4byte	.LVL17
+ 566 0253 C4030000 		.4byte	0x3c4
+ 567 0257 62020000 		.4byte	0x262
+ 568 025b 0B       		.uleb128 0xb
+ 569 025c 01       		.uleb128 0x1
+ 570 025d 50       		.byte	0x50
+ 571 025e 02       		.uleb128 0x2
+ 572 025f 74       		.byte	0x74
+ 573 0260 00       		.sleb128 0
+ 574 0261 00       		.byte	0
+ 575 0262 0A       		.uleb128 0xa
+ 576 0263 1E000000 		.4byte	.LVL18
+ 577 0267 D5030000 		.4byte	0x3d5
+ 578 026b 76020000 		.4byte	0x276
+ 579 026f 0B       		.uleb128 0xb
+ 580 0270 01       		.uleb128 0x1
+ 581 0271 50       		.byte	0x50
+ 582 0272 02       		.uleb128 0x2
+ 583 0273 74       		.byte	0x74
+ 584 0274 00       		.sleb128 0
+ 585 0275 00       		.byte	0
+ 586 0276 0C       		.uleb128 0xc
+ 587 0277 24000000 		.4byte	.LVL19
+ 588 027b E6030000 		.4byte	0x3e6
+ 589 027f 0B       		.uleb128 0xb
+ 590 0280 01       		.uleb128 0x1
+ 591 0281 50       		.byte	0x50
+ 592 0282 02       		.uleb128 0x2
+ 593 0283 75       		.byte	0x75
+ 594 0284 00       		.sleb128 0
+ 595 0285 00       		.byte	0
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 13
+
+
+ 596 0286 00       		.byte	0
+ 597 0287 08       		.uleb128 0x8
+ 598 0288 35000000 		.4byte	.LASF26
+ 599 028c 01       		.byte	0x1
+ 600 028d 4B       		.byte	0x4b
+ 601 028e 00000000 		.4byte	.LFB68
+ 602 0292 4C000000 		.4byte	.LFE68-.LFB68
+ 603 0296 01       		.uleb128 0x1
+ 604 0297 9C       		.byte	0x9c
+ 605 0298 83030000 		.4byte	0x383
+ 606 029c 09       		.uleb128 0x9
+ 607 029d B0010000 		.4byte	.LASF23
+ 608 02a1 01       		.byte	0x1
+ 609 02a2 4B       		.byte	0x4b
+ 610 02a3 81000000 		.4byte	0x81
+ 611 02a7 DE000000 		.4byte	.LLST7
+ 612 02ab 09       		.uleb128 0x9
+ 613 02ac 19000000 		.4byte	.LASF24
+ 614 02b0 01       		.byte	0x1
+ 615 02b1 4B       		.byte	0x4b
+ 616 02b2 81000000 		.4byte	0x81
+ 617 02b6 31010000 		.4byte	.LLST8
+ 618 02ba 09       		.uleb128 0x9
+ 619 02bb 65000000 		.4byte	.LASF20
+ 620 02bf 01       		.byte	0x1
+ 621 02c0 4B       		.byte	0x4b
+ 622 02c1 8D000000 		.4byte	0x8d
+ 623 02c5 84010000 		.4byte	.LLST9
+ 624 02c9 0D       		.uleb128 0xd
+ 625 02ca 64697200 		.ascii	"dir\000"
+ 626 02ce 01       		.byte	0x1
+ 627 02cf 4B       		.byte	0x4b
+ 628 02d0 68000000 		.4byte	0x68
+ 629 02d4 CE010000 		.4byte	.LLST10
+ 630 02d8 0A       		.uleb128 0xa
+ 631 02d9 12000000 		.4byte	.LVL22
+ 632 02dd A2030000 		.4byte	0x3a2
+ 633 02e1 EB020000 		.4byte	0x2eb
+ 634 02e5 0B       		.uleb128 0xb
+ 635 02e6 01       		.uleb128 0x1
+ 636 02e7 50       		.byte	0x50
+ 637 02e8 01       		.uleb128 0x1
+ 638 02e9 31       		.byte	0x31
+ 639 02ea 00       		.byte	0
+ 640 02eb 0A       		.uleb128 0xa
+ 641 02ec 18000000 		.4byte	.LVL23
+ 642 02f0 B3030000 		.4byte	0x3b3
+ 643 02f4 FE020000 		.4byte	0x2fe
+ 644 02f8 0B       		.uleb128 0xb
+ 645 02f9 01       		.uleb128 0x1
+ 646 02fa 50       		.byte	0x50
+ 647 02fb 01       		.uleb128 0x1
+ 648 02fc 30       		.byte	0x30
+ 649 02fd 00       		.byte	0
+ 650 02fe 0A       		.uleb128 0xa
+ 651 02ff 24000000 		.4byte	.LVL26
+ 652 0303 A2030000 		.4byte	0x3a2
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 14
+
+
+ 653 0307 11030000 		.4byte	0x311
+ 654 030b 0B       		.uleb128 0xb
+ 655 030c 01       		.uleb128 0x1
+ 656 030d 50       		.byte	0x50
+ 657 030e 01       		.uleb128 0x1
+ 658 030f 30       		.byte	0x30
+ 659 0310 00       		.byte	0
+ 660 0311 0A       		.uleb128 0xa
+ 661 0312 2A000000 		.4byte	.LVL27
+ 662 0316 B3030000 		.4byte	0x3b3
+ 663 031a 24030000 		.4byte	0x324
+ 664 031e 0B       		.uleb128 0xb
+ 665 031f 01       		.uleb128 0x1
+ 666 0320 50       		.byte	0x50
+ 667 0321 01       		.uleb128 0x1
+ 668 0322 31       		.byte	0x31
+ 669 0323 00       		.byte	0
+ 670 0324 0A       		.uleb128 0xa
+ 671 0325 32000000 		.4byte	.LVL30
+ 672 0329 A2030000 		.4byte	0x3a2
+ 673 032d 37030000 		.4byte	0x337
+ 674 0331 0B       		.uleb128 0xb
+ 675 0332 01       		.uleb128 0x1
+ 676 0333 50       		.byte	0x50
+ 677 0334 01       		.uleb128 0x1
+ 678 0335 30       		.byte	0x30
+ 679 0336 00       		.byte	0
+ 680 0337 0A       		.uleb128 0xa
+ 681 0338 38000000 		.4byte	.LVL31
+ 682 033c B3030000 		.4byte	0x3b3
+ 683 0340 4A030000 		.4byte	0x34a
+ 684 0344 0B       		.uleb128 0xb
+ 685 0345 01       		.uleb128 0x1
+ 686 0346 50       		.byte	0x50
+ 687 0347 01       		.uleb128 0x1
+ 688 0348 30       		.byte	0x30
+ 689 0349 00       		.byte	0
+ 690 034a 0A       		.uleb128 0xa
+ 691 034b 3E000000 		.4byte	.LVL32
+ 692 034f C4030000 		.4byte	0x3c4
+ 693 0353 5E030000 		.4byte	0x35e
+ 694 0357 0B       		.uleb128 0xb
+ 695 0358 01       		.uleb128 0x1
+ 696 0359 50       		.byte	0x50
+ 697 035a 02       		.uleb128 0x2
+ 698 035b 76       		.byte	0x76
+ 699 035c 00       		.sleb128 0
+ 700 035d 00       		.byte	0
+ 701 035e 0A       		.uleb128 0xa
+ 702 035f 44000000 		.4byte	.LVL33
+ 703 0363 D5030000 		.4byte	0x3d5
+ 704 0367 72030000 		.4byte	0x372
+ 705 036b 0B       		.uleb128 0xb
+ 706 036c 01       		.uleb128 0x1
+ 707 036d 50       		.byte	0x50
+ 708 036e 02       		.uleb128 0x2
+ 709 036f 75       		.byte	0x75
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 15
+
+
+ 710 0370 00       		.sleb128 0
+ 711 0371 00       		.byte	0
+ 712 0372 0C       		.uleb128 0xc
+ 713 0373 4A000000 		.4byte	.LVL34
+ 714 0377 E6030000 		.4byte	0x3e6
+ 715 037b 0B       		.uleb128 0xb
+ 716 037c 01       		.uleb128 0x1
+ 717 037d 50       		.byte	0x50
+ 718 037e 02       		.uleb128 0x2
+ 719 037f 74       		.byte	0x74
+ 720 0380 00       		.sleb128 0
+ 721 0381 00       		.byte	0
+ 722 0382 00       		.byte	0
+ 723 0383 0E       		.uleb128 0xe
+ 724 0384 FF010000 		.4byte	.LASF36
+ 725 0388 08       		.byte	0x8
+ 726 0389 9606     		.2byte	0x696
+ 727 038b 8F030000 		.4byte	0x38f
+ 728 038f 0F       		.uleb128 0xf
+ 729 0390 76000000 		.4byte	0x76
+ 730 0394 10       		.uleb128 0x10
+ 731 0395 38020000 		.4byte	.LASF27
+ 732 0399 05       		.byte	0x5
+ 733 039a 92       		.byte	0x92
+ 734 039b 10       		.uleb128 0x10
+ 735 039c 42020000 		.4byte	.LASF28
+ 736 03a0 05       		.byte	0x5
+ 737 03a1 93       		.byte	0x93
+ 738 03a2 11       		.uleb128 0x11
+ 739 03a3 8B000000 		.4byte	.LASF29
+ 740 03a7 06       		.byte	0x6
+ 741 03a8 26       		.byte	0x26
+ 742 03a9 B3030000 		.4byte	0x3b3
+ 743 03ad 12       		.uleb128 0x12
+ 744 03ae 81000000 		.4byte	0x81
+ 745 03b2 00       		.byte	0
+ 746 03b3 11       		.uleb128 0x11
+ 747 03b4 21000000 		.4byte	.LASF30
+ 748 03b8 07       		.byte	0x7
+ 749 03b9 26       		.byte	0x26
+ 750 03ba C4030000 		.4byte	0x3c4
+ 751 03be 12       		.uleb128 0x12
+ 752 03bf 81000000 		.4byte	0x81
+ 753 03c3 00       		.byte	0
+ 754 03c4 11       		.uleb128 0x11
+ 755 03c5 DB010000 		.4byte	.LASF31
+ 756 03c9 05       		.byte	0x5
+ 757 03ca C7       		.byte	0xc7
+ 758 03cb D5030000 		.4byte	0x3d5
+ 759 03cf 12       		.uleb128 0x12
+ 760 03d0 81000000 		.4byte	0x81
+ 761 03d4 00       		.byte	0
+ 762 03d5 11       		.uleb128 0x11
+ 763 03d6 ED010000 		.4byte	.LASF32
+ 764 03da 05       		.byte	0x5
+ 765 03db CA       		.byte	0xca
+ 766 03dc E6030000 		.4byte	0x3e6
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 16
+
+
+ 767 03e0 12       		.uleb128 0x12
+ 768 03e1 81000000 		.4byte	0x81
+ 769 03e5 00       		.byte	0
+ 770 03e6 13       		.uleb128 0x13
+ 771 03e7 72020000 		.4byte	.LASF37
+ 772 03eb 09       		.byte	0x9
+ 773 03ec 76       		.byte	0x76
+ 774 03ed 12       		.uleb128 0x12
+ 775 03ee 8D000000 		.4byte	0x8d
+ 776 03f2 00       		.byte	0
+ 777 03f3 00       		.byte	0
+ 778              		.section	.debug_abbrev,"",%progbits
+ 779              	.Ldebug_abbrev0:
+ 780 0000 01       		.uleb128 0x1
+ 781 0001 11       		.uleb128 0x11
+ 782 0002 01       		.byte	0x1
+ 783 0003 25       		.uleb128 0x25
+ 784 0004 0E       		.uleb128 0xe
+ 785 0005 13       		.uleb128 0x13
+ 786 0006 0B       		.uleb128 0xb
+ 787 0007 03       		.uleb128 0x3
+ 788 0008 0E       		.uleb128 0xe
+ 789 0009 1B       		.uleb128 0x1b
+ 790 000a 0E       		.uleb128 0xe
+ 791 000b 55       		.uleb128 0x55
+ 792 000c 17       		.uleb128 0x17
+ 793 000d 11       		.uleb128 0x11
+ 794 000e 01       		.uleb128 0x1
+ 795 000f 10       		.uleb128 0x10
+ 796 0010 17       		.uleb128 0x17
+ 797 0011 00       		.byte	0
+ 798 0012 00       		.byte	0
+ 799 0013 02       		.uleb128 0x2
+ 800 0014 24       		.uleb128 0x24
+ 801 0015 00       		.byte	0
+ 802 0016 0B       		.uleb128 0xb
+ 803 0017 0B       		.uleb128 0xb
+ 804 0018 3E       		.uleb128 0x3e
+ 805 0019 0B       		.uleb128 0xb
+ 806 001a 03       		.uleb128 0x3
+ 807 001b 0E       		.uleb128 0xe
+ 808 001c 00       		.byte	0
+ 809 001d 00       		.byte	0
+ 810 001e 03       		.uleb128 0x3
+ 811 001f 16       		.uleb128 0x16
+ 812 0020 00       		.byte	0
+ 813 0021 03       		.uleb128 0x3
+ 814 0022 0E       		.uleb128 0xe
+ 815 0023 3A       		.uleb128 0x3a
+ 816 0024 0B       		.uleb128 0xb
+ 817 0025 3B       		.uleb128 0x3b
+ 818 0026 0B       		.uleb128 0xb
+ 819 0027 49       		.uleb128 0x49
+ 820 0028 13       		.uleb128 0x13
+ 821 0029 00       		.byte	0
+ 822 002a 00       		.byte	0
+ 823 002b 04       		.uleb128 0x4
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 17
+
+
+ 824 002c 24       		.uleb128 0x24
+ 825 002d 00       		.byte	0
+ 826 002e 0B       		.uleb128 0xb
+ 827 002f 0B       		.uleb128 0xb
+ 828 0030 3E       		.uleb128 0x3e
+ 829 0031 0B       		.uleb128 0xb
+ 830 0032 03       		.uleb128 0x3
+ 831 0033 08       		.uleb128 0x8
+ 832 0034 00       		.byte	0
+ 833 0035 00       		.byte	0
+ 834 0036 05       		.uleb128 0x5
+ 835 0037 16       		.uleb128 0x16
+ 836 0038 00       		.byte	0
+ 837 0039 03       		.uleb128 0x3
+ 838 003a 0E       		.uleb128 0xe
+ 839 003b 3A       		.uleb128 0x3a
+ 840 003c 0B       		.uleb128 0xb
+ 841 003d 3B       		.uleb128 0x3b
+ 842 003e 05       		.uleb128 0x5
+ 843 003f 49       		.uleb128 0x49
+ 844 0040 13       		.uleb128 0x13
+ 845 0041 00       		.byte	0
+ 846 0042 00       		.byte	0
+ 847 0043 06       		.uleb128 0x6
+ 848 0044 2E       		.uleb128 0x2e
+ 849 0045 01       		.byte	0x1
+ 850 0046 3F       		.uleb128 0x3f
+ 851 0047 19       		.uleb128 0x19
+ 852 0048 03       		.uleb128 0x3
+ 853 0049 0E       		.uleb128 0xe
+ 854 004a 3A       		.uleb128 0x3a
+ 855 004b 0B       		.uleb128 0xb
+ 856 004c 3B       		.uleb128 0x3b
+ 857 004d 0B       		.uleb128 0xb
+ 858 004e 11       		.uleb128 0x11
+ 859 004f 01       		.uleb128 0x1
+ 860 0050 12       		.uleb128 0x12
+ 861 0051 06       		.uleb128 0x6
+ 862 0052 40       		.uleb128 0x40
+ 863 0053 18       		.uleb128 0x18
+ 864 0054 9742     		.uleb128 0x2117
+ 865 0056 19       		.uleb128 0x19
+ 866 0057 01       		.uleb128 0x1
+ 867 0058 13       		.uleb128 0x13
+ 868 0059 00       		.byte	0
+ 869 005a 00       		.byte	0
+ 870 005b 07       		.uleb128 0x7
+ 871 005c 898201   		.uleb128 0x4109
+ 872 005f 00       		.byte	0
+ 873 0060 11       		.uleb128 0x11
+ 874 0061 01       		.uleb128 0x1
+ 875 0062 31       		.uleb128 0x31
+ 876 0063 13       		.uleb128 0x13
+ 877 0064 00       		.byte	0
+ 878 0065 00       		.byte	0
+ 879 0066 08       		.uleb128 0x8
+ 880 0067 2E       		.uleb128 0x2e
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 18
+
+
+ 881 0068 01       		.byte	0x1
+ 882 0069 3F       		.uleb128 0x3f
+ 883 006a 19       		.uleb128 0x19
+ 884 006b 03       		.uleb128 0x3
+ 885 006c 0E       		.uleb128 0xe
+ 886 006d 3A       		.uleb128 0x3a
+ 887 006e 0B       		.uleb128 0xb
+ 888 006f 3B       		.uleb128 0x3b
+ 889 0070 0B       		.uleb128 0xb
+ 890 0071 27       		.uleb128 0x27
+ 891 0072 19       		.uleb128 0x19
+ 892 0073 11       		.uleb128 0x11
+ 893 0074 01       		.uleb128 0x1
+ 894 0075 12       		.uleb128 0x12
+ 895 0076 06       		.uleb128 0x6
+ 896 0077 40       		.uleb128 0x40
+ 897 0078 18       		.uleb128 0x18
+ 898 0079 9742     		.uleb128 0x2117
+ 899 007b 19       		.uleb128 0x19
+ 900 007c 01       		.uleb128 0x1
+ 901 007d 13       		.uleb128 0x13
+ 902 007e 00       		.byte	0
+ 903 007f 00       		.byte	0
+ 904 0080 09       		.uleb128 0x9
+ 905 0081 05       		.uleb128 0x5
+ 906 0082 00       		.byte	0
+ 907 0083 03       		.uleb128 0x3
+ 908 0084 0E       		.uleb128 0xe
+ 909 0085 3A       		.uleb128 0x3a
+ 910 0086 0B       		.uleb128 0xb
+ 911 0087 3B       		.uleb128 0x3b
+ 912 0088 0B       		.uleb128 0xb
+ 913 0089 49       		.uleb128 0x49
+ 914 008a 13       		.uleb128 0x13
+ 915 008b 02       		.uleb128 0x2
+ 916 008c 17       		.uleb128 0x17
+ 917 008d 00       		.byte	0
+ 918 008e 00       		.byte	0
+ 919 008f 0A       		.uleb128 0xa
+ 920 0090 898201   		.uleb128 0x4109
+ 921 0093 01       		.byte	0x1
+ 922 0094 11       		.uleb128 0x11
+ 923 0095 01       		.uleb128 0x1
+ 924 0096 31       		.uleb128 0x31
+ 925 0097 13       		.uleb128 0x13
+ 926 0098 01       		.uleb128 0x1
+ 927 0099 13       		.uleb128 0x13
+ 928 009a 00       		.byte	0
+ 929 009b 00       		.byte	0
+ 930 009c 0B       		.uleb128 0xb
+ 931 009d 8A8201   		.uleb128 0x410a
+ 932 00a0 00       		.byte	0
+ 933 00a1 02       		.uleb128 0x2
+ 934 00a2 18       		.uleb128 0x18
+ 935 00a3 9142     		.uleb128 0x2111
+ 936 00a5 18       		.uleb128 0x18
+ 937 00a6 00       		.byte	0
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 19
+
+
+ 938 00a7 00       		.byte	0
+ 939 00a8 0C       		.uleb128 0xc
+ 940 00a9 898201   		.uleb128 0x4109
+ 941 00ac 01       		.byte	0x1
+ 942 00ad 11       		.uleb128 0x11
+ 943 00ae 01       		.uleb128 0x1
+ 944 00af 31       		.uleb128 0x31
+ 945 00b0 13       		.uleb128 0x13
+ 946 00b1 00       		.byte	0
+ 947 00b2 00       		.byte	0
+ 948 00b3 0D       		.uleb128 0xd
+ 949 00b4 05       		.uleb128 0x5
+ 950 00b5 00       		.byte	0
+ 951 00b6 03       		.uleb128 0x3
+ 952 00b7 08       		.uleb128 0x8
+ 953 00b8 3A       		.uleb128 0x3a
+ 954 00b9 0B       		.uleb128 0xb
+ 955 00ba 3B       		.uleb128 0x3b
+ 956 00bb 0B       		.uleb128 0xb
+ 957 00bc 49       		.uleb128 0x49
+ 958 00bd 13       		.uleb128 0x13
+ 959 00be 02       		.uleb128 0x2
+ 960 00bf 17       		.uleb128 0x17
+ 961 00c0 00       		.byte	0
+ 962 00c1 00       		.byte	0
+ 963 00c2 0E       		.uleb128 0xe
+ 964 00c3 34       		.uleb128 0x34
+ 965 00c4 00       		.byte	0
+ 966 00c5 03       		.uleb128 0x3
+ 967 00c6 0E       		.uleb128 0xe
+ 968 00c7 3A       		.uleb128 0x3a
+ 969 00c8 0B       		.uleb128 0xb
+ 970 00c9 3B       		.uleb128 0x3b
+ 971 00ca 05       		.uleb128 0x5
+ 972 00cb 49       		.uleb128 0x49
+ 973 00cc 13       		.uleb128 0x13
+ 974 00cd 3F       		.uleb128 0x3f
+ 975 00ce 19       		.uleb128 0x19
+ 976 00cf 3C       		.uleb128 0x3c
+ 977 00d0 19       		.uleb128 0x19
+ 978 00d1 00       		.byte	0
+ 979 00d2 00       		.byte	0
+ 980 00d3 0F       		.uleb128 0xf
+ 981 00d4 35       		.uleb128 0x35
+ 982 00d5 00       		.byte	0
+ 983 00d6 49       		.uleb128 0x49
+ 984 00d7 13       		.uleb128 0x13
+ 985 00d8 00       		.byte	0
+ 986 00d9 00       		.byte	0
+ 987 00da 10       		.uleb128 0x10
+ 988 00db 2E       		.uleb128 0x2e
+ 989 00dc 00       		.byte	0
+ 990 00dd 3F       		.uleb128 0x3f
+ 991 00de 19       		.uleb128 0x19
+ 992 00df 03       		.uleb128 0x3
+ 993 00e0 0E       		.uleb128 0xe
+ 994 00e1 3A       		.uleb128 0x3a
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 20
+
+
+ 995 00e2 0B       		.uleb128 0xb
+ 996 00e3 3B       		.uleb128 0x3b
+ 997 00e4 0B       		.uleb128 0xb
+ 998 00e5 27       		.uleb128 0x27
+ 999 00e6 19       		.uleb128 0x19
+ 1000 00e7 3C       		.uleb128 0x3c
+ 1001 00e8 19       		.uleb128 0x19
+ 1002 00e9 00       		.byte	0
+ 1003 00ea 00       		.byte	0
+ 1004 00eb 11       		.uleb128 0x11
+ 1005 00ec 2E       		.uleb128 0x2e
+ 1006 00ed 01       		.byte	0x1
+ 1007 00ee 3F       		.uleb128 0x3f
+ 1008 00ef 19       		.uleb128 0x19
+ 1009 00f0 03       		.uleb128 0x3
+ 1010 00f1 0E       		.uleb128 0xe
+ 1011 00f2 3A       		.uleb128 0x3a
+ 1012 00f3 0B       		.uleb128 0xb
+ 1013 00f4 3B       		.uleb128 0x3b
+ 1014 00f5 0B       		.uleb128 0xb
+ 1015 00f6 27       		.uleb128 0x27
+ 1016 00f7 19       		.uleb128 0x19
+ 1017 00f8 3C       		.uleb128 0x3c
+ 1018 00f9 19       		.uleb128 0x19
+ 1019 00fa 01       		.uleb128 0x1
+ 1020 00fb 13       		.uleb128 0x13
+ 1021 00fc 00       		.byte	0
+ 1022 00fd 00       		.byte	0
+ 1023 00fe 12       		.uleb128 0x12
+ 1024 00ff 05       		.uleb128 0x5
+ 1025 0100 00       		.byte	0
+ 1026 0101 49       		.uleb128 0x49
+ 1027 0102 13       		.uleb128 0x13
+ 1028 0103 00       		.byte	0
+ 1029 0104 00       		.byte	0
+ 1030 0105 13       		.uleb128 0x13
+ 1031 0106 2E       		.uleb128 0x2e
+ 1032 0107 01       		.byte	0x1
+ 1033 0108 3F       		.uleb128 0x3f
+ 1034 0109 19       		.uleb128 0x19
+ 1035 010a 03       		.uleb128 0x3
+ 1036 010b 0E       		.uleb128 0xe
+ 1037 010c 3A       		.uleb128 0x3a
+ 1038 010d 0B       		.uleb128 0xb
+ 1039 010e 3B       		.uleb128 0x3b
+ 1040 010f 0B       		.uleb128 0xb
+ 1041 0110 27       		.uleb128 0x27
+ 1042 0111 19       		.uleb128 0x19
+ 1043 0112 3C       		.uleb128 0x3c
+ 1044 0113 19       		.uleb128 0x19
+ 1045 0114 00       		.byte	0
+ 1046 0115 00       		.byte	0
+ 1047 0116 00       		.byte	0
+ 1048              		.section	.debug_loc,"",%progbits
+ 1049              	.Ldebug_loc0:
+ 1050              	.LLST0:
+ 1051 0000 00000000 		.4byte	.LVL2
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 21
+
+
+ 1052 0004 08000000 		.4byte	.LVL3
+ 1053 0008 0100     		.2byte	0x1
+ 1054 000a 50       		.byte	0x50
+ 1055 000b 08000000 		.4byte	.LVL3
+ 1056 000f 26000000 		.4byte	.LFE65
+ 1057 0013 0400     		.2byte	0x4
+ 1058 0015 F3       		.byte	0xf3
+ 1059 0016 01       		.uleb128 0x1
+ 1060 0017 50       		.byte	0x50
+ 1061 0018 9F       		.byte	0x9f
+ 1062 0019 00000000 		.4byte	0
+ 1063 001d 00000000 		.4byte	0
+ 1064              	.LLST1:
+ 1065 0021 00000000 		.4byte	.LVL2
+ 1066 0025 0B000000 		.4byte	.LVL4-1
+ 1067 0029 0100     		.2byte	0x1
+ 1068 002b 51       		.byte	0x51
+ 1069 002c 0B000000 		.4byte	.LVL4-1
+ 1070 0030 26000000 		.4byte	.LFE65
+ 1071 0034 0100     		.2byte	0x1
+ 1072 0036 55       		.byte	0x55
+ 1073 0037 00000000 		.4byte	0
+ 1074 003b 00000000 		.4byte	0
+ 1075              	.LLST2:
+ 1076 003f 00000000 		.4byte	.LVL9
+ 1077 0043 09000000 		.4byte	.LVL10-1
+ 1078 0047 0100     		.2byte	0x1
+ 1079 0049 50       		.byte	0x50
+ 1080 004a 09000000 		.4byte	.LVL10-1
+ 1081 004e 18000000 		.4byte	.LFE66
+ 1082 0052 0400     		.2byte	0x4
+ 1083 0054 F3       		.byte	0xf3
+ 1084 0055 01       		.uleb128 0x1
+ 1085 0056 50       		.byte	0x50
+ 1086 0057 9F       		.byte	0x9f
+ 1087 0058 00000000 		.4byte	0
+ 1088 005c 00000000 		.4byte	0
+ 1089              	.LLST3:
+ 1090 0060 00000000 		.4byte	.LVL9
+ 1091 0064 09000000 		.4byte	.LVL10-1
+ 1092 0068 0100     		.2byte	0x1
+ 1093 006a 51       		.byte	0x51
+ 1094 006b 09000000 		.4byte	.LVL10-1
+ 1095 006f 18000000 		.4byte	.LFE66
+ 1096 0073 0400     		.2byte	0x4
+ 1097 0075 F3       		.byte	0xf3
+ 1098 0076 01       		.uleb128 0x1
+ 1099 0077 51       		.byte	0x51
+ 1100 0078 9F       		.byte	0x9f
+ 1101 0079 00000000 		.4byte	0
+ 1102 007d 00000000 		.4byte	0
+ 1103              	.LLST4:
+ 1104 0081 00000000 		.4byte	.LVL9
+ 1105 0085 09000000 		.4byte	.LVL10-1
+ 1106 0089 0100     		.2byte	0x1
+ 1107 008b 52       		.byte	0x52
+ 1108 008c 09000000 		.4byte	.LVL10-1
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 22
+
+
+ 1109 0090 18000000 		.4byte	.LFE66
+ 1110 0094 0100     		.2byte	0x1
+ 1111 0096 54       		.byte	0x54
+ 1112 0097 00000000 		.4byte	0
+ 1113 009b 00000000 		.4byte	0
+ 1114              	.LLST5:
+ 1115 009f 00000000 		.4byte	.LVL13
+ 1116 00a3 08000000 		.4byte	.LVL14
+ 1117 00a7 0100     		.2byte	0x1
+ 1118 00a9 50       		.byte	0x50
+ 1119 00aa 08000000 		.4byte	.LVL14
+ 1120 00ae 26000000 		.4byte	.LFE67
+ 1121 00b2 0400     		.2byte	0x4
+ 1122 00b4 F3       		.byte	0xf3
+ 1123 00b5 01       		.uleb128 0x1
+ 1124 00b6 50       		.byte	0x50
+ 1125 00b7 9F       		.byte	0x9f
+ 1126 00b8 00000000 		.4byte	0
+ 1127 00bc 00000000 		.4byte	0
+ 1128              	.LLST6:
+ 1129 00c0 00000000 		.4byte	.LVL13
+ 1130 00c4 0B000000 		.4byte	.LVL15-1
+ 1131 00c8 0100     		.2byte	0x1
+ 1132 00ca 51       		.byte	0x51
+ 1133 00cb 0B000000 		.4byte	.LVL15-1
+ 1134 00cf 26000000 		.4byte	.LFE67
+ 1135 00d3 0100     		.2byte	0x1
+ 1136 00d5 55       		.byte	0x55
+ 1137 00d6 00000000 		.4byte	0
+ 1138 00da 00000000 		.4byte	0
+ 1139              	.LLST7:
+ 1140 00de 00000000 		.4byte	.LVL20
+ 1141 00e2 0E000000 		.4byte	.LVL21
+ 1142 00e6 0100     		.2byte	0x1
+ 1143 00e8 50       		.byte	0x50
+ 1144 00e9 0E000000 		.4byte	.LVL21
+ 1145 00ed 1A000000 		.4byte	.LVL24
+ 1146 00f1 0400     		.2byte	0x4
+ 1147 00f3 F3       		.byte	0xf3
+ 1148 00f4 01       		.uleb128 0x1
+ 1149 00f5 50       		.byte	0x50
+ 1150 00f6 9F       		.byte	0x9f
+ 1151 00f7 1A000000 		.4byte	.LVL24
+ 1152 00fb 20000000 		.4byte	.LVL25
+ 1153 00ff 0100     		.2byte	0x1
+ 1154 0101 50       		.byte	0x50
+ 1155 0102 20000000 		.4byte	.LVL25
+ 1156 0106 2C000000 		.4byte	.LVL28
+ 1157 010a 0400     		.2byte	0x4
+ 1158 010c F3       		.byte	0xf3
+ 1159 010d 01       		.uleb128 0x1
+ 1160 010e 50       		.byte	0x50
+ 1161 010f 9F       		.byte	0x9f
+ 1162 0110 2C000000 		.4byte	.LVL28
+ 1163 0114 2E000000 		.4byte	.LVL29
+ 1164 0118 0100     		.2byte	0x1
+ 1165 011a 50       		.byte	0x50
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 23
+
+
+ 1166 011b 2E000000 		.4byte	.LVL29
+ 1167 011f 4C000000 		.4byte	.LFE68
+ 1168 0123 0400     		.2byte	0x4
+ 1169 0125 F3       		.byte	0xf3
+ 1170 0126 01       		.uleb128 0x1
+ 1171 0127 50       		.byte	0x50
+ 1172 0128 9F       		.byte	0x9f
+ 1173 0129 00000000 		.4byte	0
+ 1174 012d 00000000 		.4byte	0
+ 1175              	.LLST8:
+ 1176 0131 00000000 		.4byte	.LVL20
+ 1177 0135 11000000 		.4byte	.LVL22-1
+ 1178 0139 0100     		.2byte	0x1
+ 1179 013b 51       		.byte	0x51
+ 1180 013c 11000000 		.4byte	.LVL22-1
+ 1181 0140 1A000000 		.4byte	.LVL24
+ 1182 0144 0400     		.2byte	0x4
+ 1183 0146 F3       		.byte	0xf3
+ 1184 0147 01       		.uleb128 0x1
+ 1185 0148 51       		.byte	0x51
+ 1186 0149 9F       		.byte	0x9f
+ 1187 014a 1A000000 		.4byte	.LVL24
+ 1188 014e 23000000 		.4byte	.LVL26-1
+ 1189 0152 0100     		.2byte	0x1
+ 1190 0154 51       		.byte	0x51
+ 1191 0155 23000000 		.4byte	.LVL26-1
+ 1192 0159 2C000000 		.4byte	.LVL28
+ 1193 015d 0400     		.2byte	0x4
+ 1194 015f F3       		.byte	0xf3
+ 1195 0160 01       		.uleb128 0x1
+ 1196 0161 51       		.byte	0x51
+ 1197 0162 9F       		.byte	0x9f
+ 1198 0163 2C000000 		.4byte	.LVL28
+ 1199 0167 31000000 		.4byte	.LVL30-1
+ 1200 016b 0100     		.2byte	0x1
+ 1201 016d 51       		.byte	0x51
+ 1202 016e 31000000 		.4byte	.LVL30-1
+ 1203 0172 4C000000 		.4byte	.LFE68
+ 1204 0176 0400     		.2byte	0x4
+ 1205 0178 F3       		.byte	0xf3
+ 1206 0179 01       		.uleb128 0x1
+ 1207 017a 51       		.byte	0x51
+ 1208 017b 9F       		.byte	0x9f
+ 1209 017c 00000000 		.4byte	0
+ 1210 0180 00000000 		.4byte	0
+ 1211              	.LLST9:
+ 1212 0184 00000000 		.4byte	.LVL20
+ 1213 0188 11000000 		.4byte	.LVL22-1
+ 1214 018c 0100     		.2byte	0x1
+ 1215 018e 52       		.byte	0x52
+ 1216 018f 11000000 		.4byte	.LVL22-1
+ 1217 0193 1A000000 		.4byte	.LVL24
+ 1218 0197 0100     		.2byte	0x1
+ 1219 0199 54       		.byte	0x54
+ 1220 019a 1A000000 		.4byte	.LVL24
+ 1221 019e 23000000 		.4byte	.LVL26-1
+ 1222 01a2 0100     		.2byte	0x1
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 24
+
+
+ 1223 01a4 52       		.byte	0x52
+ 1224 01a5 23000000 		.4byte	.LVL26-1
+ 1225 01a9 2C000000 		.4byte	.LVL28
+ 1226 01ad 0100     		.2byte	0x1
+ 1227 01af 54       		.byte	0x54
+ 1228 01b0 2C000000 		.4byte	.LVL28
+ 1229 01b4 31000000 		.4byte	.LVL30-1
+ 1230 01b8 0100     		.2byte	0x1
+ 1231 01ba 52       		.byte	0x52
+ 1232 01bb 31000000 		.4byte	.LVL30-1
+ 1233 01bf 4C000000 		.4byte	.LFE68
+ 1234 01c3 0100     		.2byte	0x1
+ 1235 01c5 54       		.byte	0x54
+ 1236 01c6 00000000 		.4byte	0
+ 1237 01ca 00000000 		.4byte	0
+ 1238              	.LLST10:
+ 1239 01ce 00000000 		.4byte	.LVL20
+ 1240 01d2 11000000 		.4byte	.LVL22-1
+ 1241 01d6 0100     		.2byte	0x1
+ 1242 01d8 53       		.byte	0x53
+ 1243 01d9 11000000 		.4byte	.LVL22-1
+ 1244 01dd 1A000000 		.4byte	.LVL24
+ 1245 01e1 0400     		.2byte	0x4
+ 1246 01e3 F3       		.byte	0xf3
+ 1247 01e4 01       		.uleb128 0x1
+ 1248 01e5 53       		.byte	0x53
+ 1249 01e6 9F       		.byte	0x9f
+ 1250 01e7 1A000000 		.4byte	.LVL24
+ 1251 01eb 23000000 		.4byte	.LVL26-1
+ 1252 01ef 0100     		.2byte	0x1
+ 1253 01f1 53       		.byte	0x53
+ 1254 01f2 23000000 		.4byte	.LVL26-1
+ 1255 01f6 2C000000 		.4byte	.LVL28
+ 1256 01fa 0400     		.2byte	0x4
+ 1257 01fc F3       		.byte	0xf3
+ 1258 01fd 01       		.uleb128 0x1
+ 1259 01fe 53       		.byte	0x53
+ 1260 01ff 9F       		.byte	0x9f
+ 1261 0200 2C000000 		.4byte	.LVL28
+ 1262 0204 31000000 		.4byte	.LVL30-1
+ 1263 0208 0100     		.2byte	0x1
+ 1264 020a 53       		.byte	0x53
+ 1265 020b 31000000 		.4byte	.LVL30-1
+ 1266 020f 4C000000 		.4byte	.LFE68
+ 1267 0213 0400     		.2byte	0x4
+ 1268 0215 F3       		.byte	0xf3
+ 1269 0216 01       		.uleb128 0x1
+ 1270 0217 53       		.byte	0x53
+ 1271 0218 9F       		.byte	0x9f
+ 1272 0219 00000000 		.4byte	0
+ 1273 021d 00000000 		.4byte	0
+ 1274              		.section	.debug_aranges,"",%progbits
+ 1275 0000 44000000 		.4byte	0x44
+ 1276 0004 0200     		.2byte	0x2
+ 1277 0006 00000000 		.4byte	.Ldebug_info0
+ 1278 000a 04       		.byte	0x4
+ 1279 000b 00       		.byte	0
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 25
+
+
+ 1280 000c 0000     		.2byte	0
+ 1281 000e 0000     		.2byte	0
+ 1282 0010 00000000 		.4byte	.LFB63
+ 1283 0014 08000000 		.4byte	.LFE63-.LFB63
+ 1284 0018 00000000 		.4byte	.LFB64
+ 1285 001c 08000000 		.4byte	.LFE64-.LFB64
+ 1286 0020 00000000 		.4byte	.LFB65
+ 1287 0024 26000000 		.4byte	.LFE65-.LFB65
+ 1288 0028 00000000 		.4byte	.LFB66
+ 1289 002c 18000000 		.4byte	.LFE66-.LFB66
+ 1290 0030 00000000 		.4byte	.LFB67
+ 1291 0034 26000000 		.4byte	.LFE67-.LFB67
+ 1292 0038 00000000 		.4byte	.LFB68
+ 1293 003c 4C000000 		.4byte	.LFE68-.LFB68
+ 1294 0040 00000000 		.4byte	0
+ 1295 0044 00000000 		.4byte	0
+ 1296              		.section	.debug_ranges,"",%progbits
+ 1297              	.Ldebug_ranges0:
+ 1298 0000 00000000 		.4byte	.LFB63
+ 1299 0004 08000000 		.4byte	.LFE63
+ 1300 0008 00000000 		.4byte	.LFB64
+ 1301 000c 08000000 		.4byte	.LFE64
+ 1302 0010 00000000 		.4byte	.LFB65
+ 1303 0014 26000000 		.4byte	.LFE65
+ 1304 0018 00000000 		.4byte	.LFB66
+ 1305 001c 18000000 		.4byte	.LFE66
+ 1306 0020 00000000 		.4byte	.LFB67
+ 1307 0024 26000000 		.4byte	.LFE67
+ 1308 0028 00000000 		.4byte	.LFB68
+ 1309 002c 4C000000 		.4byte	.LFE68
+ 1310 0030 00000000 		.4byte	0
+ 1311 0034 00000000 		.4byte	0
+ 1312              		.section	.debug_line,"",%progbits
+ 1313              	.Ldebug_line0:
+ 1314 0000 09020000 		.section	.debug_str,"MS",%progbits,1
+ 1314      02008D01 
+ 1314      00000201 
+ 1314      FB0E0D00 
+ 1314      01010101 
+ 1315              	.LASF9:
+ 1316 0000 5F5F696E 		.ascii	"__int32_t\000"
+ 1316      7433325F 
+ 1316      7400
+ 1317              	.LASF25:
+ 1318 000a 6D6F746F 		.ascii	"motor_backward\000"
+ 1318      725F6261 
+ 1318      636B7761 
+ 1318      726400
+ 1319              	.LASF24:
+ 1320 0019 725F7370 		.ascii	"r_speed\000"
+ 1320      65656400 
+ 1321              	.LASF30:
+ 1322 0021 4D6F746F 		.ascii	"MotorDirRight_Write\000"
+ 1322      72446972 
+ 1322      52696768 
+ 1322      745F5772 
+ 1322      69746500 
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 26
+
+
+ 1323              	.LASF26:
+ 1324 0035 6D6F746F 		.ascii	"motor_sharpTurn\000"
+ 1324      725F7368 
+ 1324      61727054 
+ 1324      75726E00 
+ 1325              	.LASF11:
+ 1326 0045 75696E74 		.ascii	"uint8\000"
+ 1326      3800
+ 1327              	.LASF10:
+ 1328 004b 696E7433 		.ascii	"int32_t\000"
+ 1328      325F7400 
+ 1329              	.LASF13:
+ 1330 0053 666C6F61 		.ascii	"float\000"
+ 1330      7400
+ 1331              	.LASF0:
+ 1332 0059 7369676E 		.ascii	"signed char\000"
+ 1332      65642063 
+ 1332      68617200 
+ 1333              	.LASF20:
+ 1334 0065 64656C61 		.ascii	"delay\000"
+ 1334      7900
+ 1335              	.LASF1:
+ 1336 006b 756E7369 		.ascii	"unsigned char\000"
+ 1336      676E6564 
+ 1336      20636861 
+ 1336      7200
+ 1337              	.LASF5:
+ 1338 0079 6C6F6E67 		.ascii	"long unsigned int\000"
+ 1338      20756E73 
+ 1338      69676E65 
+ 1338      6420696E 
+ 1338      7400
+ 1339              	.LASF29:
+ 1340 008b 4D6F746F 		.ascii	"MotorDirLeft_Write\000"
+ 1340      72446972 
+ 1340      4C656674 
+ 1340      5F577269 
+ 1340      746500
+ 1341              	.LASF21:
+ 1342 009e 6D6F746F 		.ascii	"motor_forward\000"
+ 1342      725F666F 
+ 1342      72776172 
+ 1342      6400
+ 1343              	.LASF14:
+ 1344 00ac 646F7562 		.ascii	"double\000"
+ 1344      6C6500
+ 1345              	.LASF18:
+ 1346 00b3 6D6F746F 		.ascii	"motor_stop\000"
+ 1346      725F7374 
+ 1346      6F7000
+ 1347              	.LASF34:
+ 1348 00be 5A756D6F 		.ascii	"ZumoLibrary\\Motor.c\000"
+ 1348      4C696272 
+ 1348      6172795C 
+ 1348      4D6F746F 
+ 1348      722E6300 
+ 1349              	.LASF35:
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 27
+
+
+ 1350 00d2 433A5C55 		.ascii	"C:\\Users\\Visa\\Downloads\\Zumo.release04\\Zumo01\\"
+ 1350      73657273 
+ 1350      5C566973 
+ 1350      615C446F 
+ 1350      776E6C6F 
+ 1351 0100 5A756D6F 		.ascii	"ZumoBot.cydsn\000"
+ 1351      426F742E 
+ 1351      63796473 
+ 1351      6E00
+ 1352              	.LASF12:
+ 1353 010e 75696E74 		.ascii	"uint32\000"
+ 1353      333200
+ 1354              	.LASF33:
+ 1355 0115 474E5520 		.ascii	"GNU C 4.9.3 20150303 (release) [ARM/embedded-4_9-br"
+ 1355      4320342E 
+ 1355      392E3320 
+ 1355      32303135 
+ 1355      30333033 
+ 1356 0148 616E6368 		.ascii	"anch revision 221220] -mcpu=cortex-m3 -mthumb -g -O"
+ 1356      20726576 
+ 1356      6973696F 
+ 1356      6E203232 
+ 1356      31323230 
+ 1357 017b 67202D66 		.ascii	"g -ffunction-sections -ffat-lto-objects\000"
+ 1357      66756E63 
+ 1357      74696F6E 
+ 1357      2D736563 
+ 1357      74696F6E 
+ 1358              	.LASF8:
+ 1359 01a3 756E7369 		.ascii	"unsigned int\000"
+ 1359      676E6564 
+ 1359      20696E74 
+ 1359      00
+ 1360              	.LASF23:
+ 1361 01b0 6C5F7370 		.ascii	"l_speed\000"
+ 1361      65656400 
+ 1362              	.LASF7:
+ 1363 01b8 6C6F6E67 		.ascii	"long long unsigned int\000"
+ 1363      206C6F6E 
+ 1363      6720756E 
+ 1363      7369676E 
+ 1363      65642069 
+ 1364              	.LASF17:
+ 1365 01cf 6D6F746F 		.ascii	"motor_start\000"
+ 1365      725F7374 
+ 1365      61727400 
+ 1366              	.LASF31:
+ 1367 01db 50574D5F 		.ascii	"PWM_WriteCompare1\000"
+ 1367      57726974 
+ 1367      65436F6D 
+ 1367      70617265 
+ 1367      3100
+ 1368              	.LASF32:
+ 1369 01ed 50574D5F 		.ascii	"PWM_WriteCompare2\000"
+ 1369      57726974 
+ 1369      65436F6D 
+ 1369      70617265 
+ARM GAS  C:\Users\Visa\AppData\Local\Temp\ccy29JVL.s 			page 28
+
+
+ 1369      3200
+ 1370              	.LASF36:
+ 1371 01ff 49544D5F 		.ascii	"ITM_RxBuffer\000"
+ 1371      52784275 
+ 1371      66666572 
+ 1371      00
+ 1372              	.LASF19:
+ 1373 020c 73706565 		.ascii	"speed\000"
+ 1373      6400
+ 1374              	.LASF16:
+ 1375 0212 73697A65 		.ascii	"sizetype\000"
+ 1375      74797065 
+ 1375      00
+ 1376              	.LASF6:
+ 1377 021b 6C6F6E67 		.ascii	"long long int\000"
+ 1377      206C6F6E 
+ 1377      6720696E 
+ 1377      7400
+ 1378              	.LASF15:
+ 1379 0229 63686172 		.ascii	"char\000"
+ 1379      00
+ 1380              	.LASF2:
+ 1381 022e 73686F72 		.ascii	"short int\000"
+ 1381      7420696E 
+ 1381      7400
+ 1382              	.LASF27:
+ 1383 0238 50574D5F 		.ascii	"PWM_Start\000"
+ 1383      53746172 
+ 1383      7400
+ 1384              	.LASF28:
+ 1385 0242 50574D5F 		.ascii	"PWM_Stop\000"
+ 1385      53746F70 
+ 1385      00
+ 1386              	.LASF4:
+ 1387 024b 6C6F6E67 		.ascii	"long int\000"
+ 1387      20696E74 
+ 1387      00
+ 1388              	.LASF22:
+ 1389 0254 6D6F746F 		.ascii	"motor_turn\000"
+ 1389      725F7475 
+ 1389      726E00
+ 1390              	.LASF3:
+ 1391 025f 73686F72 		.ascii	"short unsigned int\000"
+ 1391      7420756E 
+ 1391      7369676E 
+ 1391      65642069 
+ 1391      6E7400
+ 1392              	.LASF37:
+ 1393 0272 43794465 		.ascii	"CyDelay\000"
+ 1393      6C617900 
+ 1394              		.ident	"GCC: (GNU Tools for ARM Embedded Processors) 4.9.3 20150303 (release) [ARM/embedded-4_9-br
