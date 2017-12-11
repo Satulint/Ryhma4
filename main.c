@@ -59,6 +59,8 @@ int main()
     ADC_Battery_Start();        
     int16 adcresult =0;
     float volts = 0.0;
+    motor_start();
+    motor_forward(0,0);
     
     struct sensors_ ref;
     struct sensors_ dig;
@@ -95,201 +97,214 @@ int main()
         }   
     }
     
-    CyDelay(1000);
-
-    for(;;)
+    sensor_isr_StartEx(sensor_isr_handler);
+        
+    reflectance_start();
+    IR_led_Write(1);
+    CyDelay(10);
+    reflectance_read(&ref);
+    int vasenUlkoValkoinen = ref.l3;
+    int vasenValkoinen = ref.l1;
+    int oikeaValkoinen = ref.r1;
+    int oikeaUlkoValkoinen = ref.r3;
+    
+    
+    
+    Beep(150, 150);
+    
+    
+    while (IR_receiver_Read() == 1)
     {
-        /*
-        Beep(2000, 30);
-        Beep(2000, 60);
-        Beep(150, 90);
-        Beep(12000, 120);
-        Beep(1, 150);
-        Beep(1, 180);
-        Beep(1, 210);
-        Beep(1, 240);
-        */
-                     // motor start
+      IR_receiver_Read();
+    }  
+    
+    reflectance_read(&dig);
+            int leftI = 50;
+            int rightI = 42;
+            int leftMinI = 10;
+            int rightMinI = 10;
+    
+    while (ref.l3 < 16000 && ref.r3 < 16000) {
         
-        sensor_isr_StartEx(sensor_isr_handler);
-        
-        reflectance_start();
-
-        IR_led_Write(1);
-            //int maxSpeed = 150;
-            int left = 248;
-            int right = 255;
-            int leftMin = 70;
-            int rightMin = 70;
-            int rightHardMin = 0;
-            int leftHardMin = 0;
-            int leftSoftMin = 140;
-            int rightSoftMin = 140;
-            int turnDirection = 0;
-        reflectance_set_threshold(15500, 14100, 14270, 16000);
-        for(;;)
-        {   
-            reflectance_read(&ref);
-            printf("%d %d %d %d \r\n", ref.l3, ref.l1, ref.r1, ref.r3);       //print out each period of reflectance sensors
-            reflectance_digital(&dig);      //print out 0 or 1 according to results of reflectance period
-            printf("%d %d %d %d \r\n", dig.l3, dig.l1, dig.r1, dig.r3);        //print out 0 or 1 according to results of reflectance period
-            
-           
-            
-            
-            motor_start();
-            
-            
-            
-            motor_turn(left, right, 1); 
-            
-            
-            
-            
-            
-            /*
-            if (ref.l3 > 12000) {
-                right *= 1.2;
-                left *= 0.8;
-            }
-            if (ref.r3 > 12000) {
-                left *= 1.2;
-                right *= 0.8;    
-            }
-            */
-            
-            //Turndirection 1 on vasen 2 oikea
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
-            
+        reflectance_read(&ref); 
+            float vasenSensori = (float)(ref.l1 - vasenValkoinen)/(23999 - vasenValkoinen);
+            float oikeaSensori = (float)(ref.r1 - oikeaValkoinen)/(23999 - oikeaValkoinen);  
+            motor_turn(leftI,rightI,1);                 
             
             //Suoraan
-            if (ref.l1 > 14100 && ref.r1 > 14270) {
-                left = 248;
-                right = 255;
-                turnDirection = 0;
+            if (vasenSensori > 0.43 && oikeaSensori > 0.44) {
+                leftI = 50;
+                rightI = 42;
             }
             
             //Loivempi
-            if (ref.l1 < 10000 && ref.r1 > 10000) {
-                right *= 0.90;
-                turnDirection = 2;
+            else if (vasenSensori < 0.26 && oikeaSensori > 0.26) {
+                rightI *= 0.91;
+                if (rightI < rightMinI) {
+                    rightI = rightMinI;              
+                }
+            } else if (vasenSensori > 0.31 && oikeaSensori < 0.31) {
+                leftI *= 0.91;
+                if (leftI < leftMinI) {
+                    leftI = leftMinI;
+                }
+            } else {
+                printf("xd");
+            }
+        reflectance_read(&dig);
+        
+    }
+    motor_turn(0,0,1);
+    
+    while (IR_receiver_Read() == 1)
+    {
+      IR_receiver_Read();
+    }  
+    
+    motor_turn(255,247,150);
+    
+    /*
+    
+    Beep(150,150);
+    uint8 button2;   
+    button2 = SW1_Read();
+    while (button2 == 1) {
+        button2 = SW1_Read();
+    }
+    */
+    
+    
+    /*
+    
+    CyDelay(300);
+    Beep(250, 200);
+    CyDelay(150);
+    Beep(250, 200);
+    CyDelay(150);
+    Beep(1000, 200);
+    */
+    
+    for(;;)
+    {
+        
+                     // motor start
+        
+        
+            //int maxSpeed = 150;
+            int left = 255;
+            int right = 247;
+            int leftMin = 80;
+            int rightMin = 80;
+            int rightHardMin = 0;
+            int leftHardMin = 0;
+            int leftSoftMin = 170;
+            int rightSoftMin = 170;
+            int sharpTurnDirection = 0;
+            int rememberDirection = 0;
+            int finish = 0;
+        
+        while (finish != 2)
+        {   
+            reflectance_read(&ref);
+            /*
+            printf("%d %d %d %d \r\n", ref.l3, ref.l1, ref.r1, ref.r3);       //print out each period of reflectance sensors
+            */
+            /*
+            reflectance_digital(&dig);      //print out 0 or 1 according to results of reflectance period
+            printf("%d %d %d %d \r\n", dig.l3, dig.l1, dig.r1, dig.r3);        //print out 0 or 1 according to results of reflectance period
+            */
+            
+            float vasenSensori = (float)(ref.l1 - vasenValkoinen)/(23999 - vasenValkoinen);
+            float oikeaSensori = (float)(ref.r1 - oikeaValkoinen)/(23999 - oikeaValkoinen);
+            float vasenUlkoSensori = (float)(ref.l3 - vasenUlkoValkoinen)/(23999 - vasenUlkoValkoinen);          
+            float oikeaUlkoSensori = (float)(ref.r3 - oikeaUlkoValkoinen)/(23999 - oikeaUlkoValkoinen);
+            printf("%f ja %f\n", vasenSensori, oikeaSensori);
+            
+            
+            
+    
+            motor_sharpTurn(left,right,1,sharpTurnDirection); 
+            
+            //sharpTurnDirection 1 on vasen 2 oikea
+                  
+            
+            //Suoraan
+            if (vasenSensori > 0.43 && oikeaSensori > 0.44) {
+                left = 255;
+                right = 247;
+                sharpTurnDirection = 0;
+            }
+            
+            //Loivempi
+            else if (vasenSensori < 0.26 && oikeaSensori > 0.26) {
+                right *= 0.91;
+                sharpTurnDirection = 0;
                 if (right < rightMin) {
                     right = rightMin;              
                 }
-            } else if (ref.l1 > 11000 && ref.r1 < 11000) {
-                left *= 0.90;
-                turnDirection = 1;
+            } else if (vasenSensori > 0.31 && oikeaSensori < 0.31) {
+                left *= 0.91;
+                sharpTurnDirection = 0;
                 if (left < leftMin) {
                     left = leftMin;
                 }   
                 //Jyrkin
-            } else if (ref.l1 < 8000 && ref.r1 > 8000) {
-                right *= 0.75;
-                turnDirection = 2;
-                if (right < rightHardMin) {
-                    right = rightHardMin;              
-                }
-            } else if (ref.l1 > 8000 && ref.r1 < 8000) {
-                left *= 0.75;
-                turnDirection = 1;
-                if (left < leftHardMin) {
-                    left = leftHardMin;
-                } 
+            } else if (vasenSensori < 0.43 && oikeaSensori > 0.44) {            
+                sharpTurnDirection = 2;
+                rememberDirection = 2;
+                left = 247;
+                right = 110;
+                
+            } else if (vasenSensori > 0.43 && oikeaSensori < 0.44) {
+                sharpTurnDirection = 1;
+                rememberDirection = 1;
+                left = 110;
+                right = 247;
+                
                 //Loivin
-            } else if (ref.l1 < 14100 && ref.r1 > 14270) {
-                right *= 0.90;
-                turnDirection = 2;
+            } else if (vasenSensori < 0.43 && oikeaSensori > 0.44) {
+                right *= 0.91;
+                sharpTurnDirection = 0;
                 if (right < rightSoftMin) {
                     right = rightSoftMin;              
                 }          
-            } else if (ref.l1 > 14100 && ref.r1 < 14270) {
-                left *= 0.90;
-                turnDirection = 1;
+            } else if (vasenSensori > 0.43 && oikeaSensori < 0.44) {
+                left *= 0.91;
+                sharpTurnDirection = 0;
                 if (left < leftSoftMin) {
                     left = leftSoftMin;
                 }       
             }   
             
             //Ulosajo ja takaisin kääntyminen
-            if (ref.l1 < 14100 && ref.r1 < 14270) {
-                if (turnDirection == 1) {
-                    left *= 0.5;
-                } else if (turnDirection == 2) {
-                    right *= 0.5;
+             else if (vasenSensori < 0.14 && oikeaSensori < 0.14) {
+                if (rememberDirection == 1) {
+                    sharpTurnDirection = 1;
+                    left = 110;
+                } else if (rememberDirection == 2) {
+                    sharpTurnDirection = 2;
+                    right = 110;
                 } else {
-                    turnDirection = 0;
+                    sharpTurnDirection = 0;
                 }
+            }      
+            
+            while (vasenUlkoSensori > 0.44 && oikeaUlkoSensori > 0.44 && finish == 1) {
+               motor_stop();
+               finish = 2;
+               break;
             }
+            while (vasenUlkoSensori > 0.44 && oikeaUlkoSensori > 0.44) {
+               motor_turn(255,247,50);
+               finish = 1;
+               break;
+            }        
             
-            
-            
-            if (ref.l3 > 13000 && ref.r3 > 13000) {
-                motor_stop();
-                break;
-            }
-            
-            
-            
-            
-            
-            
-            
-            
-            /*
-            if (ref.r1 < 14000 && ref.l1 < 14000) {
-                left = 60;
-                right = 68;
-            }
-            if (ref.r1 > 14000 && ref.l1 < 14000) {
-                right *= 1.1;
-                left *= 0.9;
-            }
-            if (ref.r1 > 14000 && ref.l1 < 14000) {
-                left *= 1.1;
-                right *= 0.9;
-            */
-            
-            
-            /* else if (ref.r1 > 14000 && ref.l1 > 14000 
-                && ref.r3 > 14000 && ref.l3 > 14000) {
-                    left = 0;
-                    right = 0;
-                }
-            */
-    
-          //  break;
         }
-       
-        
-        
-        
-       /*
-        Testirata
-        motor_turn(200,208,2100);     // turn
-        motor_turn(255,0,305);      //90 Oikealle
-        motor_turn(200,208,1500);
-        motor_turn(255,0,305);
-        motor_turn(200,208,1600);
-        motor_turn(255,0,305);
-        motor_turn(90,55,6500);
-        //motor_backward(100,2000);    // movinb backward
-        
-        */
-           
-       // motor_stop();               // motor stop
-       // CyDelay(500);
-    }           
-}   
+    }
+    
+}
+
 //*/
 
 
